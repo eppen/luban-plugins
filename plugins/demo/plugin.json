@@ -1,0 +1,19 @@
+{
+  "name": "demo",
+  "version": "0.1.0",
+  "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
+  "tools": [
+    {
+      "name": "now",
+      "description": "返回本机当前时间（ISO 8601 与时区）",
+      "readOnly": true,
+      "parameters": { "type": "object", "properties": {} }
+    },
+    {
+      "name": "disk_free",
+      "description": "返回工作区所在磁盘的剩余空间",
+      "readOnly": true,
+      "parameters": { "type": "object", "properties": {} }
+    }
+  ]
+}
