@@ -69,6 +69,20 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
    `node scripts/registry-tool.mjs sign <name> --key <私钥>`；私钥不入任何仓库；
 4. `node scripts/registry-tool.mjs verify` 通过后提 PR。
 
+## CI 检查什么
+
+`.github/workflows/ci.yml` 跑 `scripts/check-plugins.mjs`，**不 require 任何插件代码**（CI 不执行第三方代码）：
+
+- `plugin.json` 能解析；`name` 与目录名一致且合规；`version` 是 semver；`description` 够长
+- `main`（默认 `index.js`）存在并通过 `node --check`
+- `tools[]` 每一项：工具名合规（实际会变成 `pl__<name>__<tool>`）、不重复、`readOnly` 显式布尔、`parameters` 是对象
+- 没提交 `node_modules`；缺 `README.md` 只警告
+- **打 tag 时**额外核对 `<name>-v<version>` 与包内 `version` 一致
+
+目录哈希、`sourceSha256`、以及「索引条目 == 用户装到的那份」由主仓
+`node scripts/registry-tool.mjs verify --remote` 把关（按 `install` 字段真拉包比对）。
+本仓刻意不重复实现哈希算法 —— 同一套算法两处各写一版，早晚会漂移。
+
 ## 版本与兼容
 
 - 每个插件独立 semver；改工具名 / 参数 / 权限 = 破坏性变更，升 minor（`0.x` 阶段）。

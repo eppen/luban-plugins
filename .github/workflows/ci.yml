@@ -1,0 +1,26 @@
+name: CI
+
+# 两条触发分开看：
+#   push / pull_request → 清单与文件自检（不执行插件代码）
+#   push tag (*-v*)     → 额外核对 tag 与 plugin.json 的 version 一致
+#                         （只有 CI 拦得住「tag 写了 v0.2.0、清单还是 0.1.0」）
+on:
+  push:
+    branches: [main]
+    tags: ['*-v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 清单 / 文件自检（只做语法检查，不 require 任何插件代码）
+        run: node scripts/check-plugins.mjs
+      - name: tag 与 plugins/<name>/plugin.json 的 version 一致
+        if: startsWith(github.ref, 'refs/tags/')
+        run: node scripts/check-plugins.mjs --tag "$GITHUB_REF_NAME"
