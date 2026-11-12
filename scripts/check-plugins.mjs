@@ -17,6 +17,39 @@ const TOOLNAME = /^[a-z][a-z0-9_]{0,39}$/;
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const PERMS = ['fsRead', 'fsWrite', 'shell', 'net', 'env'];
 
+// 与 Luban 主仓 registry-core.js 的 parseFrontmatter 同语义（key: value 单行 + `|` / `>` 块标量）。
+// 两仓没有共享代码，这段刻意保持最小；主仓那边改了语义这里要跟着改（反之亦然）。
+function frontmatter(text) {
+  const m = /^---\r?\n([\s\S]*?)\r?\n---/.exec(String(text));
+  if (!m) return {};
+  const lines = m[1].split(/\r?\n/);
+  const out = {};
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (/^\s/.test(line)) continue;
+    const c = line.indexOf(':');
+    if (c <= 0) continue;
+    const k = line.slice(0, c).trim().toLowerCase();
+    if (!k) continue;
+    const v = line.slice(c + 1).trim();
+    const block = /^([|>])([-+]?)$/.exec(v);
+    if (block) {
+      const parts = [];
+      for (let j = i + 1; j < lines.length; j++) {
+        const next = lines[j];
+        if (!next.trim()) { parts.push(''); i = j; continue; }
+        if (!/^\s/.test(next)) break;
+        parts.push(next.trim());
+        i = j;
+      }
+      out[k] = (block[1] === '|' ? parts.join('\n') : parts.join(' ').replace(/\s+/g, ' ')).trim();
+      continue;
+    }
+    out[k] = v;
+  }
+  return out;
+}
+
 const errors = [];
 const warns = [];
 const err = (m) => errors.push(m);
@@ -86,6 +119,33 @@ for (const dirName of names) {
   }
 }
 
+// 技能：纯 Markdown 说明书，契约只有 SKILL.md 的 frontmatter（name 必需、version 可选）。
+// 技能不给模型新增执行能力，所以不校验 main / tools；但 name 必须等于目录名 ——
+// 安装目录直接用 name，索引条目名也只认它。
+const skillsDir = join(ROOT, 'skills');
+const skillNames = existsSync(skillsDir)
+  ? readdirSync(skillsDir)
+    .filter((n) => !n.startsWith('.') && statSync(join(skillsDir, n)).isDirectory())
+    .sort()
+  : [];
+
+for (const dirName of skillNames) {
+  const dir = join(skillsDir, dirName);
+  const tag = `[skill ${dirName}]`;
+  const file = join(dir, 'SKILL.md');
+  if (!existsSync(file)) { err(`${tag} 缺 SKILL.md`); continue; }
+  const fm = frontmatter(readFileSync(file, 'utf8').slice(0, 20000));
+  if (!fm.name) { err(`${tag} SKILL.md 的 frontmatter 没写 name`); continue; }
+  if (fm.name !== dirName) err(`${tag} name（${fm.name}）必须与目录名一致 —— 安装目录与技能标识都用它`);
+  if (!NAME.test(fm.name)) err(`${tag} name 不合规（^[a-z0-9][a-z0-9-]{1,39}$）`);
+  if ((fm.description ?? '').length < 8) {
+    err(`${tag} description 太短（<8）—— 目录里只有这一句能让模型决定要不要读它`);
+  }
+  if (fm.version && !SEMVER.test(fm.version)) err(`${tag} version 不是 semver：${fm.version}`);
+  if (fm.version) versions.set(dirName, fm.version);
+  else warn(`${tag} 没写 version：打 tag 时 CI 无从核对，索引里也标不出新版本`);
+}
+
 // push tag 时由 CI 传 --tag <tagName>：<name>-v<version> 必须与包内 version 一致。
 // 这一条只有 CI 能代劳 —— 本地打 tag 时没人拦得住「tag 写了 v0.2.0、plugin.json 还是 0.1.0」。
 const ti = process.argv.indexOf('--tag');
@@ -96,14 +156,14 @@ if (ti > 0) {
   else {
     const name = m[1];
     const version = m[2];
-    if (!versions.has(name)) err(`tag "${tagName}" 里的插件 ${name} 不在本仓 plugins/ 下`);
+    if (!versions.has(name)) err(`tag "${tagName}" 里的 ${name} 不在本仓 plugins/ 或 skills/ 下`);
     else if (versions.get(name) !== version) {
-      err(`tag "${tagName}" 与 plugins/${name}/plugin.json 的 version ${versions.get(name)} 不一致`);
+      err(`tag "${tagName}" 与 ${name} 的 version ${versions.get(name)} 不一致`);
     }
   }
 }
 
 for (const w of warns) console.warn(`WARN  ${w}`);
 for (const e of errors) console.error(`ERROR ${e}`);
-console.log(`\n${names.length} 个插件 | ${errors.length} 错误 ${warns.length} 警告`);
+console.log(`\n${names.length} 个插件 | ${skillNames.length} 个技能 | ${errors.length} 错误 ${warns.length} 警告`);
 process.exit(errors.length ? 1 : 0);

@@ -1,6 +1,6 @@
 # luban-plugins
 
-[Luban](https://github.com/eppen/luban) 的本地插件 monorepo：一个目录一个插件，各自独立版本。
+[Luban](https://github.com/eppen/luban) 的本地插件 / 技能 monorepo：一个目录一个条目，各自独立版本。
 
 插件是「给 Agent 加一个它能自己决定调用的工具」的最小方式 —— 不用起进程、不用写协议，
 就是一个 `plugin.json` + 一个 Node 模块。**代价是没有沙箱：插件在 Luban 扩展进程里执行，
@@ -14,7 +14,14 @@ plugins/<name>/
   plugin.json      清单：name / version / description / main / tools
   index.js         入口（默认），module.exports = { tools: { <toolName>: { handler } } }
   README.md        这个插件做什么、权限声明、特殊情况
+
+skills/<name>/
+  SKILL.md         frontmatter：name（必需，等于目录名）/ version（可选）/ description
+                   正文写「什么时候用、按什么步骤做、不要做什么」
 ```
+
+插件与技能的区别：**插件给 Agent 新增工具（执行代码），技能只是说明书（让模型把已有工具用对）**。
+技能没有权限争议，所以走同一份索引但校验更轻（只核 SKILL.md 的 frontmatter + 目录哈希）。
 
 `<name>` 同时是工具名前缀的来源（`pl__<name>__<tool>`），**建立索引后不可改名**。
 
@@ -24,6 +31,12 @@ plugins/<name>/
 |---|---|---|---|
 | [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo` |
 
+## 现有技能
+
+| name | version | 说明 | 索引条目 |
+|---|---|---|---|
+| [changelog-draft](skills/changelog-draft) | 0.1.0 | 按提交历史起草 CHANGELOG 条目（默认只给草稿） | `changelog-draft` |
+
 ## 手动安装
 
 ```bash
@@ -32,6 +45,9 @@ cp -R plugins/demo ~/.luban/plugins/demo
 
 # 项目级：<repo>/.luban/plugins/<name>（同名时覆盖全局）
 mkdir -p .luban/plugins && cp -R plugins/demo .luban/plugins/demo
+
+# 技能：~/.luban/skills/<name>（纯 Markdown，装完下一轮就被扫到，不需要开关 / 信任）
+mkdir -p ~/.luban/skills && cp -R skills/changelog-draft ~/.luban/skills/changelog-draft
 ```
 
 Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本地插件」）。
@@ -52,6 +68,23 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 
 字段契约的权威定义在 Luban 主仓的 [docs/tools.md](https://github.com/eppen/luban/blob/main/docs/tools.md)。
 
+## 新增一个技能
+
+1. 建 `skills/<name>/`，里面只放 `SKILL.md`（有参考脚本可以一起放，但目录里**不要有**
+   `node_modules` / `.git` / 符号链接 —— 哈希跳过它们，装出来和仓库里就不一致了）。
+2. `SKILL.md` 的 frontmatter：
+   ```yaml
+   ---
+   name: <name>            # 必须等于目录名；索引条目名也用它
+   version: 0.1.0          # 可选，但写了就必须与 tag 一致
+   description: 一句话说清「什么时候该用它」—— 技能目录里只显示这一句
+   ---
+   ```
+3. 正文写清三件事：**什么时候用**、**按什么顺序做**（具体到工具名）、**不要做什么**
+   （最容易出错的越权 / 副作用操作）。模型是按正文执行的，含糊等于没写。
+4. 装进 `~/.luban/skills/` 后目录内即可见（`luban skill add <name>` 或手工拷），
+   用 `read_skill <name>` 验证一次正文能被完整读出来。
+
 ## 发布到索引
 
 索引（含签名与审核状态）在 Luban 主仓：`registry/registry.json`，schema 见
@@ -60,6 +93,7 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 1. 本仓打 tag：`<name>-v<version>`，例如 `demo-v0.1.0`；
 2. 在主仓的 `registry/registry.json` 加/更新条目：
    - `install`: `{ "type": "git", "url": "https://github.com/eppen/luban-plugins.git", "subdir": "plugins/<name>", "target": "global" }`
+     （技能把 `subdir` 换成 `skills/<name>`，并把 `type` 设为 `"skill"`、`tools` 为 `[]`、`permissions` 为 `{}`）
    - `sourceSha256`: 插件目录的确定性哈希 —— 目录下文件按相对路径的 UTF-8 字节序升序，
      逐个写入 `<相对路径>\0<文件 sha256 hex>\n`，再对整体取 sha256
      （`node scripts/registry-tool.mjs hash <dir>` 可复算）；
@@ -77,7 +111,9 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 - `main`（默认 `index.js`）存在并通过 `node --check`
 - `tools[]` 每一项：工具名合规（实际会变成 `pl__<name>__<tool>`）、不重复、`readOnly` 显式布尔、`parameters` 是对象
 - 没提交 `node_modules`；缺 `README.md` 只警告
-- **打 tag 时**额外核对 `<name>-v<version>` 与包内 `version` 一致
+- 技能：`SKILL.md` 存在、frontmatter 有 `name`（等于目录名、合规）与够长的 `description`、
+  `version` 可选但必须是 semver
+- **打 tag 时**额外核对 `<name>-v<version>` 与包内 `version` 一致（插件比 `plugin.json`、技能比 frontmatter）
 
 目录哈希、`sourceSha256`、以及「索引条目 == 用户装到的那份」由主仓
 `node scripts/registry-tool.mjs verify --remote` 把关（按 `install` 字段真拉包比对）。
