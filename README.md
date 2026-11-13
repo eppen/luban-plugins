@@ -1,5 +1,7 @@
 # luban-plugins
 
+[English](README.en.md) | [日本語](README.ja.md) | 简体中文
+
 [Luban](https://github.com/eppen/luban) 的本地插件 / 技能 monorepo：一个目录一个条目，各自独立版本。
 
 插件是「给 Agent 加一个它能自己决定调用的工具」的最小方式 —— 不用起进程、不用写协议，
