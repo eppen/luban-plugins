@@ -1,0 +1,5 @@
+# 插件源码哈希（sourceSha256）必须跨机器、跨 clone 方式稳定。
+# 全局 core.autocrlf=true 会让 git archive 在导出时把 LF 转成 CRLF，
+# 导致「本地 hash（对工作区算）」与「verify --remote（对 git archive 算）」不一致。
+# 这里强制所有文本文件在仓库内、checkout、archive 时一律 LF。
+* text=auto eol=lf
