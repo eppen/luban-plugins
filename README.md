@@ -29,7 +29,7 @@ skills/<name>/
 
 | name | version | 工具 | 索引条目 |
 |---|---|---|---|
-| [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo` |
+| [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo`、`cc-safety-net` |
 
 ## 现有技能
 

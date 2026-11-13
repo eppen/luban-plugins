@@ -1,0 +1,28 @@
+{
+  "name": "cc-safety-net",
+  "version": "0.1.0",
+  "description": "执行前命令守卫：解析命令意图，拦截破坏性 Git/文件命令与敏感文件（SSH key / .env / ~/.aws）访问。移植自 kenryu42/cc-safety-net 的 checkCommand 库 API。",
+  "main": "index.js",
+  "permissions": {
+    "fsRead": false,
+    "fsWrite": false,
+    "shell": true,
+    "net": false,
+    "env": false
+  },
+  "tools": [
+    {
+      "name": "check_command",
+      "description": "检查一条 shell 命令是否危险（破坏性 Git 操作、rm -rf、curl|bash、敏感文件访问等）。返回 allow 或 deny（带原因与规则 ID）。在真正执行前调用它做一次前置判断。",
+      "readOnly": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": { "type": "string", "description": "要检查的完整 shell 命令" },
+          "cwd": { "type": "string", "description": "执行命令的工作目录（绝对路径），缺省用当前工作区根" }
+        },
+        "required": ["command"]
+      }
+    }
+  ]
+}
