@@ -27,15 +27,6 @@ jobs:
         with:
           node-version: '20'
 
-      # 从 luban 主仓拉签名脚本（主仓 private，需要 PAT）
-      - name: Checkout luban scripts
-        uses: actions/checkout@v4
-        with:
-          repository: eppen/luban
-          ref: main
-          path: luban-scripts
-          token: ${{ secrets.LUBAN_SCRIPTS_TOKEN }}
-
       # 从 GitHub Secrets 解码私钥到临时文件（用完即删，不落盘到仓库）
       - name: Decode signing key
         env:
@@ -44,10 +35,10 @@ jobs:
           echo "$REGISTRY_SIGNING_KEY" | base64 -d > /tmp/signing-key.priv.json
           chmod 600 /tmp/signing-key.priv.json
 
-      # 找出所有未签名的条目并签名（用 luban 主仓的脚本，指向本仓的 registry.json）
+      # 用本仓的签名脚本，指向本仓的 registry.json
       - name: Sign unsigned entries
         run: |
-          node luban-scripts/scripts/sign-all.mjs --key /tmp/signing-key.priv.json --registry registry/registry.json
+          node scripts/sign-all.mjs --key /tmp/signing-key.priv.json --registry registry/registry.json
 
       # 检查是否有改动
       - name: Check for changes
