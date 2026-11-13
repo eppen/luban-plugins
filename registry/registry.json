@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-13T13:53:13Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -68,6 +68,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-12T14:30:00Z",
         "notes": "两个工具声明 readOnly，但 disk_free 通过 execFile 调用 df -k（只读取磁盘统计，未写盘/联网），与声明一致；shell=true 已如实声明。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "rXVMOvPMaJVt5nLUHz+So/q3kYOMyKVNacH9AXUiyA69mwRzV3++kAO0Wvcw65EVBqfNuML/8f/xGlJtK2NfAg=="
       }
     },
     {
@@ -98,6 +103,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-12T14:56:13Z",
         "notes": "技能无执行能力；正文只要求 read_file / git log / git show / git describe 这类只读命令，并明确禁止 reset/checkout/stash、禁止 commit/push、禁止在用户未确认时改文件。description 与正文一致。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "kOGvBF7aNY2qmRyV8FS7UYqIHermnhVecumvVhmPgNgACxLbTLW4pubtccT0hGFlPHAJiK8Q9gHK8k+YaCt7DQ=="
       }
     },
     {
@@ -157,6 +167,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-13T00:59:49Z",
         "notes": "工具声明 readOnly，但 permissions.shell=true 已如实声明（实现通过 execFile 调用 git，只读检查不写盘/联网）。依赖外部 npm 包 cc-safety-net，安装时需 npm install cc-safety-net --prefix <插件目录>。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "vvpXf4ApzGh1JpT7B7GuLe4n75s/71GAznRNijP2j3u4LZhkhBZBa36ZjqnhA2mvJrRYyBWSlthujANuelMABA=="
       }
     }
   ]
