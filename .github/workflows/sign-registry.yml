@@ -1,0 +1,77 @@
+name: Sign Registry
+
+# 监听 push 到 main（PR 合并后触发），自动给未签名的 registry 条目补签名
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'registry/registry.json'
+  workflow_dispatch:
+
+# 关键：默认 GITHUB_TOKEN 只读，必须显式声明写权限才能 push
+permissions:
+  contents: write
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    # 防止 CI 自己 commit 触发死循环
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 从 luban 主仓拉签名脚本（主仓 private，需要 PAT）
+      - name: Checkout luban scripts
+        uses: actions/checkout@v4
+        with:
+          repository: eppen/luban
+          ref: main
+          path: luban-scripts
+          token: ${{ secrets.LUBAN_SCRIPTS_TOKEN }}
+
+      # 从 GitHub Secrets 解码私钥到临时文件（用完即删，不落盘到仓库）
+      - name: Decode signing key
+        env:
+          REGISTRY_SIGNING_KEY: ${{ secrets.REGISTRY_SIGNING_KEY }}
+        run: |
+          echo "$REGISTRY_SIGNING_KEY" | base64 -d > /tmp/signing-key.priv.json
+          chmod 600 /tmp/signing-key.priv.json
+
+      # 找出所有未签名的条目并签名（用 luban 主仓的脚本，指向本仓的 registry.json）
+      - name: Sign unsigned entries
+        run: |
+          node luban-scripts/scripts/sign-all.mjs --key /tmp/signing-key.priv.json --registry registry/registry.json
+
+      # 检查是否有改动
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet registry/registry.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # 有改动才 commit + push
+      - name: Commit and push signatures
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add registry/registry.json
+          git commit -m "chore(registry): auto-sign unsigned entries"
+          git push
+
+      # 清理私钥文件
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f /tmp/signing-key.priv.json
+          echo "Signing key cleaned up"

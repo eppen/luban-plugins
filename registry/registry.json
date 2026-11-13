@@ -1,0 +1,178 @@
+{
+  "registryVersion": 1,
+  "updatedAt": "2026-11-13",
+  "schema": "./entry.schema.json",
+  "signingKeys": [
+    {
+      "keyId": "dev-2",
+      "algo": "ed25519",
+      "publicKey": "keys/dev-2.pub"
+    },
+    {
+      "keyId": "registry-ci",
+      "algo": "ed25519",
+      "publicKey": "keys/registry-ci.pub"
+    }
+  ],
+  "entries": [
+    {
+      "name": "demo",
+      "displayName": "Demo 小工具",
+      "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "demo",
+        "system"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/demo",
+        "target": "global"
+      },
+      "sourceSha256": "f806fcc5d33aa49dda38b9dc19936d635adef498f0960987a08bd9b1d32c61cb",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [
+        {
+          "name": "now",
+          "description": "返回本机当前时间（ISO 8601 与时区）",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        {
+          "name": "disk_free",
+          "description": "返回工作区所在磁盘的剩余空间",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "permissions": {
+        "fsRead": false,
+        "fsWrite": false,
+        "shell": true,
+        "net": false,
+        "env": false
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-12T14:30:00Z",
+        "notes": "两个工具声明 readOnly，但 disk_free 通过 execFile 调用 df -k（只读取磁盘统计，未写盘/联网），与声明一致；shell=true 已如实声明。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "ls1AItcYLWY9aEsHXMquC+haxjFk7n7c12M4/OVNDTCe7q3oN1hyzdNYEV6LvOyZH1pYfhVtntzZ8lhMHDO5Bw=="
+      }
+    },
+    {
+      "name": "changelog-draft",
+      "displayName": "CHANGELOG 起草",
+      "description": "按提交历史起草 CHANGELOG 条目：先读现有写法再取 git log，输出分类草稿，默认不改文件",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "git",
+        "docs"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/changelog-draft",
+        "target": "global"
+      },
+      "sourceSha256": "807f066342c0c90b9accd011d6f009b5650c1e093eab9765585c1710eaee7a6b",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-12T14:56:13Z",
+        "notes": "技能无执行能力；正文只要求 read_file / git log / git show / git describe 这类只读命令，并明确禁止 reset/checkout/stash、禁止 commit/push、禁止在用户未确认时改文件。description 与正文一致。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "XvOg5VHpVvKhfRrUVcXUy+8tYW+4xFmzYP7alaRzQZlIhT1U5kzOfNsbOq6EFm4mrGsS6uEKGSj09QYDcu8xBQ=="
+      }
+    },
+    {
+      "name": "cc-safety-net",
+      "displayName": "命令安全守卫",
+      "description": "执行前命令守卫：解析命令意图，拦截破坏性 Git/文件命令与敏感文件（SSH key / .env / ~/.aws）访问。移植自 kenryu42/cc-safety-net 的 checkCommand 库 API。",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "safety",
+        "git",
+        "shell"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/cc-safety-net",
+        "target": "global"
+      },
+      "sourceSha256": "7fde042d9442b826d6b1d78ed1757dbb0be5ecb89867f7cd8ced9413c51c94c0",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [
+        {
+          "name": "check_command",
+          "description": "检查一条 shell 命令是否危险（破坏性 Git 操作、rm -rf、curl|bash、敏感文件访问等）。返回 allow 或 deny（带原因与规则 ID）。在真正执行前调用它做一次前置判断。",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "要检查的完整 shell 命令"
+              },
+              "cwd": {
+                "type": "string",
+                "description": "执行命令的工作目录（绝对路径），缺省用当前工作区根"
+              }
+            },
+            "required": [
+              "command"
+            ]
+          }
+        }
+      ],
+      "permissions": {
+        "fsRead": false,
+        "fsWrite": false,
+        "shell": true,
+        "net": false,
+        "env": false
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-13T00:59:49Z",
+        "notes": "工具声明 readOnly，但 permissions.shell=true 已如实声明（实现通过 execFile 调用 git，只读检查不写盘/联网）。依赖外部 npm 包 cc-safety-net，安装时需 npm install cc-safety-net --prefix <插件目录>。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "U+UdwNtzh2Bq9ZWA4RLk1hIN+qHMowW8RzXdVvqbkOWCzivh5tpUXXe0kCvMlZPZ1nc1ALXaarrm9OGu1RC/CA=="
+      }
+    }
+  ]
+}

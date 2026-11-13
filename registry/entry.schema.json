@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://luban.local/schemas/registry-entry-v1.json",
+  "title": "Luban 插件 / 技能索引条目（L0 + L1）",
+  "description": "L0 = 可发现（名称/版本/来源/校验和）；L1 = 可信任（声明权限 + 签名 + 审核状态）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "displayName", "description", "type", "version", "author", "license", "install", "ctxApi"],
+  "properties": {
+    "type": {
+      "enum": ["plugin", "skill"],
+      "description": "plugin = 会执行代码的本地插件；skill = 纯文本说明书，无需权限声明"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,39}$",
+      "description": "唯一标识，也是工具名前缀（插件工具名 = pl__<name>__<tool>），建立索引即固定，不允许复用"
+    },
+    "displayName": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "description": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$" },
+    "author": { "type": "string", "minLength": 1 },
+    "license": { "type": "string", "minLength": 1 },
+    "repo": { "type": "string", "format": "uri" },
+    "homepage": { "type": "string", "format": "uri" },
+    "tags": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "type": "string", "maxLength": 20 }
+    },
+    "install": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["git", "tarball", "local"] },
+        "url": { "type": "string" },
+        "subdir": { "type": "string" },
+        "target": {
+          "enum": ["global", "project"],
+          "description": "global = ~/.luban/plugins/<name>；project = <repo>/.luban/plugins/<name>"
+        }
+      }
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "安装包 / 目录归档的 sha256。git 方式下为 tag 对应归档的哈希；缺失则视为不可复现安装"
+    },
+    "ctxApi": {
+      "type": "string",
+      "description": "兼容的 ctx API 版本区间，例如 >=0.1 <1.0；宿主超出区间应拒绝加载并提示"
+    },
+    "tools": {
+      "type": "array",
+      "description": "工具清单，必须与包内 plugin.json 逐字一致（校验脚本比对）",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "description", "readOnly", "parameters"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,39}$" },
+          "description": { "type": "string", "minLength": 4 },
+          "readOnly": { "type": "boolean" },
+          "parameters": { "type": "object" }
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "description": "L1 核心：作者自报的实际能力。readOnly 只是工具语义，不能推翻这里；审核以本块为准",
+      "additionalProperties": false,
+      "properties": {
+        "fsRead": { "type": "boolean" },
+        "fsWrite": { "type": "boolean" },
+        "shell": { "type": "boolean" },
+        "net": { "type": "boolean" },
+        "env": { "type": "boolean" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["pending", "reviewed", "flagged", "revoked"] },
+        "reviewedBy": { "type": "string" },
+        "reviewedAt": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string", "maxLength": 500 }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algo", "keyId", "sig"],
+      "properties": {
+        "algo": { "enum": ["ed25519"] },
+        "keyId": { "type": "string" },
+        "sig": { "type": "string", "description": "base64，签名对象 = 去掉 signature 字段后按键名排序的紧凑 JSON" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "plugin" } }, "required": ["type"] },
+      "then": { "required": ["permissions", "tools", "review"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "skill" } }, "required": ["type"] },
+      "then": {
+        "properties": { "permissions": { "const": {} }, "tools": { "maxItems": 0 } }
+      }
+    }
+  ]
+}
