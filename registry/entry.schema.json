@@ -53,7 +53,7 @@
     },
     "tools": {
       "type": "array",
-      "description": "工具清单，必须与包内 plugin.json 逐字一致（校验脚本比对）",
+      "description": "工具清单，必须与包内 plugin.json 逐字一致（校验脚本比对）。纯主题插件写 []",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -63,6 +63,22 @@
           "description": { "type": "string", "minLength": 4 },
           "readOnly": { "type": "boolean" },
           "parameters": { "type": "object" }
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "纯数据主题（L0）：只有 theme、没有 tools 的插件合法 —— 它不 require 任何代码，装完也不需要信任确认。token 名与 media/panel.css 的 :root 变量同名（去掉 -- 前缀）",
+      "additionalProperties": false,
+      "required": ["label", "tokens"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1, "description": "界面显示名，如「樱花」" },
+        "description": { "type": "string", "description": "一句话说明适用场景，市场里展示" },
+        "tokens": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "颜色 / 尺寸 token。名字必须在 plugin.js 的白名单内；值逐项过正则，非法项丢弃而不是整份判坏",
+          "additionalProperties": { "type": "string", "minLength": 1 }
         }
       }
     },

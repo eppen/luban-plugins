@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T00:52:50Z",
+  "updatedAt": "2026-11-14T02:07:46Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -206,6 +206,126 @@
         "algo": "ed25519",
         "keyId": "registry-ci",
         "sig": "e9/VuEVrDkk7p9AjRamkuFROIIyixDL3SAZCq3+YdXDAd1NdaZztBqH+pvT0VpeIYFa6z1lSx+dOqbsAIhIbDw=="
+      }
+    },
+    {
+      "name": "theme-sakura",
+      "displayName": "樱花主题",
+      "description": "浅粉底 + 樱红强调的 Luban 界面主题，纯数据无工具",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "theme",
+        "ui"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/theme-sakura",
+        "target": "global"
+      },
+      "sourceSha256": "ee01b21aecb54297191d6aa9e5fc468129f38ff289493b9258580aae4d501afc",
+      "ctxApi": ">=0.1 <1.0",
+      "theme": {
+        "label": "樱花",
+        "description": "浅粉底 + 樱红强调，圆角偏大，适合浅色工作区",
+        "tokens": {
+          "bg": "#fdf6f8",
+          "fg": "#3d2b33",
+          "panel": "#fffafc",
+          "border": "#f0d4de",
+          "accent": "#e26fa4",
+          "accent-fg": "#ffffff",
+          "muted": "#9b7a88",
+          "code-bg": "#f7e8ee",
+          "surface": "#fffafc",
+          "surface-2": "#fbeef3",
+          "hover": "rgba(226, 111, 164, 0.10)",
+          "link": "#c94f86",
+          "ok": "#3f9d6e",
+          "warn": "#c98a2e",
+          "error": "#d64550",
+          "radius-sm": "6",
+          "radius": "10",
+          "radius-lg": "14"
+        }
+      },
+      "tools": [],
+      "permissions": {
+        "fsRead": false,
+        "fsWrite": false,
+        "shell": false,
+        "net": false,
+        "env": false
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-14T02:07:46Z",
+        "notes": "纯数据插件：只提供 theme.tokens，无 index.js、无 tools，安装与加载都不执行任何代码。tokens 取值由 plugin.js 白名单逐项校验（非法项丢弃），注入时又逐条复验。"
+      }
+    },
+    {
+      "name": "theme-midnight",
+      "displayName": "午夜主题",
+      "description": "深蓝紫底 + 青蓝强调的 Luban 界面主题，对比度高，纯数据无工具",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "theme",
+        "ui"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/theme-midnight",
+        "target": "global"
+      },
+      "sourceSha256": "ad78f3284d30cfa433ec7d880ca145dcfd1ac6ada11403007df690405345632b",
+      "ctxApi": ">=0.1 <1.0",
+      "theme": {
+        "label": "午夜",
+        "description": "深蓝紫底 + 青蓝强调，对比度高，适合深色工作区",
+        "tokens": {
+          "bg": "#0f1220",
+          "fg": "#e6e9f5",
+          "panel": "#161a2e",
+          "border": "#2a3050",
+          "accent": "#6c8cff",
+          "accent-fg": "#0b0e1a",
+          "muted": "#8a90b0",
+          "code-bg": "#1a1f38",
+          "surface": "#161a2e",
+          "surface-2": "#1e2440",
+          "hover": "rgba(108, 140, 255, 0.14)",
+          "link": "#7fb0ff",
+          "ok": "#4fd1a5",
+          "warn": "#e0b04a",
+          "error": "#ff6b7a",
+          "radius-sm": "4",
+          "radius": "8",
+          "radius-lg": "12"
+        }
+      },
+      "tools": [],
+      "permissions": {
+        "fsRead": false,
+        "fsWrite": false,
+        "shell": false,
+        "net": false,
+        "env": false
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-14T02:07:46Z",
+        "notes": "纯数据插件：只提供 theme.tokens，无 index.js、无 tools，安装与加载都不执行任何代码。tokens 取值由 plugin.js 白名单逐项校验（非法项丢弃），注入时又逐条复验。"
       }
     }
   ]
