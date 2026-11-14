@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T02:07:46Z",
+  "updatedAt": "2026-11-14T02:08:29Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -266,6 +266,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-14T02:07:46Z",
         "notes": "纯数据插件：只提供 theme.tokens，无 index.js、无 tools，安装与加载都不执行任何代码。tokens 取值由 plugin.js 白名单逐项校验（非法项丢弃），注入时又逐条复验。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "InPR/qeS6d2G0KliVgk9rqYHPGIUa/80VsTNc4Z5hD4rVvSJUc8lpG8iX8EARJGtVaOZSLjLawQ/W8uu/52MAg=="
       }
     },
     {
@@ -326,6 +331,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-14T02:07:46Z",
         "notes": "纯数据插件：只提供 theme.tokens，无 index.js、无 tools，安装与加载都不执行任何代码。tokens 取值由 plugin.js 白名单逐项校验（非法项丢弃），注入时又逐条复验。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "TiLK6rNRSm83rHO1uSCosY2rp6Zh1uriGVhMatv+Wu4lfj4/Z/Sp6Oy3d14sYvM15sSSMDnsYvDBpMT/E9o3CA=="
       }
     }
   ]
