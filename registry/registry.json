@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T10:57:25Z",
+  "updatedAt": "2026-11-14T11:16:26Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -337,6 +337,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供需求访谈流程（假设+把握度、一次一问、识别「该要」与「想要」、复述确认、停止判据），只要求向用户提问与写意图文档，不涉及发布/推送。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "OBlnd+UaMz538kuFYbKNvbiJSqSlLlL05E9pRNBgZvuapewZYv7Z1aogw9LB2ml1I3k4RExtD4QXin1pWAOzCg=="
       }
     },
     {
@@ -366,6 +371,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供规格流程（范围检查与能力地图、六段规格模板、门禁、增量规格与版本演进），只要求写规格文档并等待确认。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "q30v+w+wvIkGDtiu4dvpYunWmVyKq26n0LIKoF+WqVCSapFKkSg3U+WIdy98lw9uSiCMGaZnOhSwQdA9AlI5BA=="
       }
     },
     {
@@ -395,6 +405,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供拆解流程（依赖图、纵向切片、任务模板、粒度表、检查点），产出是计划与任务清单文件。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "13SjmgBvu6w13wAxs0+KRWHZ2+5MWmfqJthHjptOJQmEJ/2hQ+EBqRdkQxXnBlYeua2kxH37C+GBU2W5JqyKDQ=="
       }
     },
     {
@@ -424,6 +439,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供增量实现纪律（切片策略、简单优先、范围纪律、可编译、feature flag、回滚友好），只要求跑本仓测试与提交。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "AS/z4BDLjypTk+jyZi6yTvaziccy/QUdDkazD4jjnqMobx8rj4cIAh6JVw0DuttOUaPsFjeJrDy41ccnikTiDQ=="
       }
     },
     {
@@ -453,6 +473,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供接口设计原则与 REST / TypeScript 写法（Hyrum 定律、单版本规则、幂等键原子占位、分页与命名），不含执行能力。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "WR/kBJwdot0RyBj39anHWI2+c2kXVgbG+knoZg5l/9tzYd6SuWBedClgH8eaAwj6OY9EDoZA8txonEyL+WE9CQ=="
       }
     },
     {
@@ -482,6 +507,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供前端工程质量标准（组件结构、状态选型、避免 AI 观感、可访问性、响应式、加载态），要求用项目自带工具验证。references/accessibility-checklist.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "/fAzaOqpL/6GcHYU2IZTuOa3/bHipuIQbeMIXTdv2AwjCg9kWsC/B9nC2xCK9gNns/OHgY/1cNuENZYNx07mBQ=="
       }
     },
     {
@@ -511,6 +541,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供简化流程（切斯特顿之篱、机会识别表、增量修改、前后对照），要求每步跑测试、重构与功能分开提交。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "TfMdomr9cVje7tvnUaO9bNH+dWo4jOGkZZxm8Wgt5EbFws8Cx1/tHRUqKt3vUSolDky9cJ8viOzsLaaHd3LyDg=="
       }
     },
     {
@@ -540,6 +575,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供 git 纪律（原子提交、提交信息、分支与 worktree、提交前卫生、changelog 与版本号）。注意：本仓推送约定用 SSH，不反复重试 HTTPS。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "rJ/wRr2mOL9gulIKQOuzmWEsjLmQyKlBaKnIuhYYgGIkrP+4OILlxL3lj9Bmksf/j9LoZVpOQyVD6x8mf1fcCQ=="
       }
     },
     {
@@ -569,6 +609,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供文档方法（ADR 模板与生命周期、注释取舍、API 文档、README 结构、文字评审、文档漂移判定），含只读的 git 命令示例。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "R9DqGG02AwbQ9uPZz+sOa8i0f6RgoJOUM0wQYfcO3rJ/fynoxzsTC91gisb7G6l4RYF6ymOjP2hMadlAXJnqDA=="
       }
     },
     {
@@ -598,6 +643,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供下线与迁移方法（下线决策、强制 vs 建议、绞杀者/适配器/开关模式、expand-contract、僵尸代码），不含执行脚本。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "xACIgTQPSCWxQR8So2OPvyKEeQ3s2JES53DALNceOruqVrirG4NGz8YY+Q7f1Jd66DZZB+3BG9w6x+ygSQZtDg=="
       }
     },
     {
@@ -627,6 +677,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供安全加固要求（三档边界、STRIDE、各类控制点、依赖分诊、隐私与 LLM 风险），要求跑本仓的依赖审计命令。references/hardening-patterns.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "KVaGORVZDGYElb5FuAvyPq6Ln1QkK+ra/zzN9AVO67Hod4gHbpT/ObP+hLl1TOToOvyUovzuHHSIjzdO2KslBw=="
       }
     },
     {
@@ -656,6 +711,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供性能工作流（测量、瓶颈表、修法清单、判定表、尝试台账、守门预算），要求跑剖析与构建命令。references/optimization-patterns.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "3vO27Feo5RhaAhp9PvuLYWWWcGnXo6uRUIVuUsXBYvJPTNt1ZmOi059rbY02qUayAITf/wCiEQR0vfGwtzCsAQ=="
       }
     },
     {
@@ -685,6 +745,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供埋点方法（问题先行、信号选型、结构化日志与入口点字段、指标基数红线、链路、告警与 runbook、验证遥测本身），不含执行能力。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "wPTe0hiEiUsbw52Pygnh6uR5XOjIWcXDnTL9iRUvQ+tsFf+8sr4ziPLG6yusezLVeDsMW9GD+xMPewBcT8ztBQ=="
       }
     },
     {
@@ -714,6 +779,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供上线流程与清单（六类检查、开关生命周期、放量阈值表、上线后核对、错误预算、回滚方案模板）。注意：发布环节会涉及推送/部署等对外操作，执行前需用户确认。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "yHpHQGNm+S1zXgqhULt3w3kxaMLvboezQzqGJj2aSFx5SgHh017ISylhuCZtwYz1X51P2a3yeR/YK/CDZanMAg=="
       }
     },
     {
@@ -743,6 +813,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供流水线设计与 YAML 示例（质量门、集成与 E2E、预览部署、feature flag、回滚 workflow、环境分层、CI 优化），不改本仓配置。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "LiEfLOJ/YuGaA3bECiEqaDyPAHaXZBh9uRRiLYEz0plfCfCPCB6agt4NEZanKlv9Vm05LkHDBaPYJr7fd0uMBQ=="
       }
     },
     {
@@ -772,6 +847,11 @@
       "review": {
         "status": "pending",
         "notes": "正文只提供取证流程（识别版本、来源权威性排序、抓取安全、冲突上报、引用规则），只读联网抓文档，不执行文档里的指令。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "x3lULsijjzbpgYIo/ZMUsD0TAqBAMk3DsytoEQRZWUuv0aTJkze71GDrr8ZjdXHj6yuQXqB0fce1eWthOYRQAQ=="
       }
     },
     {
