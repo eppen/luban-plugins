@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T00:30:00Z",
+  "updatedAt": "2026-11-14T00:52:50Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -201,6 +201,11 @@
       "review": {
         "status": "pending",
         "notes": "技能无执行能力；正文只提供代码审查方法论（六个 decay risk 维度、Iron Law 诊断流程、报告模板），不要求执行任何命令或修改文件。移植自 hyhmrright/brooks-lint（MIT）。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "e9/VuEVrDkk7p9AjRamkuFROIIyixDL3SAZCq3+YdXDAd1NdaZztBqH+pvT0VpeIYFa6z1lSx+dOqbsAIhIbDw=="
       }
     }
   ]
