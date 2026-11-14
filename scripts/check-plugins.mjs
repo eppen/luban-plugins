@@ -17,6 +17,22 @@ const TOOLNAME = /^[a-z][a-z0-9_]{0,39}$/;
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const PERMS = ['fsRead', 'fsWrite', 'shell', 'net', 'env'];
 
+// 主题 token 白名单 —— 必须与 Luban 主仓 plugin.js 的 THEME_COLOR_TOKENS / THEME_SIZE_TOKENS
+// 逐字一致：那边才是「装到用户机器上真正生效的闸门」，这里只是提前在 CI 拦住写错的 token。
+// 名单将来扩容要两处一起改（只改一边的表现是「CI 过了但主题里有个颜色不生效」）。
+const THEME_COLOR_TOKENS = [
+  'bg', 'fg', 'panel', 'border', 'accent', 'accent-fg', 'muted', 'code-bg',
+  'surface', 'surface-2', 'hover', 'link', 'ok', 'warn', 'error'
+];
+const THEME_SIZE_TOKENS = { 'radius-sm': [0, 48], 'radius': [0, 48], 'radius-lg': [0, 48], 'font-size': [8, 40] };
+const THEME_HEX = /^#[0-9a-fA-F]{3,8}$/;
+const THEME_FUNC = /^(?:rgb|rgba|hsl|hsla)\(\s*[-0-9.,%\s/]+\)$/;
+const THEME_WORD = /^[a-zA-Z]{3,22}$/;
+const THEME_WORD_DENY = /^(expression|url|var|env|attr|image|paint|element)$/i;
+const THEME_SIZE = /^(0|0?\.\d+|[1-9]\d*(?:\.\d+)?)\s*(px|em|rem|%|pt)?$/;
+const THEME_MAX_TOKENS = 24;
+
+
 // 与 Luban 主仓 registry-core.js 的 parseFrontmatter 同语义（key: value 单行 + `|` / `>` 块标量）。
 // 两仓没有共享代码，这段刻意保持最小；主仓那边改了语义这里要跟着改（反之亦然）。
 function frontmatter(text) {
@@ -81,11 +97,16 @@ for (const dirName of names) {
   if ((m.description ?? '').length < 8) err(`${tag} description 太短（<8）`);
   versions.set(dirName, m.version);
 
+  // 纯主题插件（只有 theme、没有 tools）**没有入口文件**：它不 require 任何代码，
+  // 所以既不需要 main，也不进信任流程。这类插件的全部影响力就是几个白名单 CSS 变量。
+  const themeOnly = !!m.theme && (!Array.isArray(m.tools) || m.tools.length === 0);
+
   // main 默认 index.js；声明了就必须存在。只做 node --check（语法），不 import
   const main = m.main || 'index.js';
   const mainFile = join(dir, main);
-  if (!existsSync(mainFile)) err(`${tag} main 指向的文件不存在：${main}`);
-  else {
+  if (!existsSync(mainFile)) {
+    if (!themeOnly) err(`${tag} main 指向的文件不存在：${main}`);
+  } else {
     try { execFileSync(process.execPath, ['--check', mainFile], { stdio: 'pipe' }); }
     catch (e) {
       const first = String(e.stderr || e.message).trim().split('\n').filter(Boolean)[0] || '';
@@ -93,10 +114,53 @@ for (const dirName of names) {
     }
   }
 
+  // 主题：结构 + 白名单。与主仓 plugin.js 的 parseTheme 同语义（非法 token 在宿主侧会被丢弃，
+  // 但那种「静默少一个颜色」在 CI 里就该是错误 —— 作者本意和实际效果不一致）
+  if (m.theme) {
+    const th = m.theme;
+    if (typeof th !== 'object' || Array.isArray(th)) err(`${tag} theme 必须是对象`);
+    else {
+      if (th.label !== undefined && (typeof th.label !== 'string' || th.label.length > 40)) {
+        err(`${tag} theme.label 必须是字符串且不超过 40 字`);
+      }
+      const tokens = (th.tokens && typeof th.tokens === 'object' && !Array.isArray(th.tokens)) ? th.tokens : th;
+      const keys = Object.keys(tokens).filter((k) => k !== 'label' && k !== 'description' && k !== 'tokens');
+      if (!keys.length) err(`${tag} theme 里没有任何 token`);
+      if (keys.length > THEME_MAX_TOKENS) err(`${tag} theme token 太多（${keys.length} > ${THEME_MAX_TOKENS}）`);
+      for (const rawKey of keys) {
+        const key = String(rawKey).replace(/^--/, '');
+        const where = `${tag} theme.${rawKey}`;
+        const isColor = THEME_COLOR_TOKENS.includes(key);
+        const sizeRange = THEME_SIZE_TOKENS[key];
+        if (!isColor && !sizeRange) {
+          err(`${where} 不在白名单里（颜色：${THEME_COLOR_TOKENS.join(' / ')}；尺寸：${Object.keys(THEME_SIZE_TOKENS).join(' / ')}）`);
+          continue;
+        }
+        const v = String(tokens[rawKey] ?? '').trim();
+        if (!v) { err(`${where} 是空值`); continue; }
+        if (/[;{}<>\\"']/.test(v) || v.includes('/*')) { err(`${where} 含非法字符（; { } < > 引号 / 注释），宿主会整条丢弃：${v}`); continue; }
+        if (sizeRange) {
+          const sm = THEME_SIZE.exec(v);
+          if (!sm) { err(`${where} 不是合法尺寸（数字 + px|em|rem|%|pt）：${v}`); continue; }
+          const n = Number(sm[1]);
+          if (n < sizeRange[0] || n > sizeRange[1]) err(`${where} 超出范围 ${sizeRange[0]}~${sizeRange[1]}：${v}`);
+          continue;
+        }
+        if (THEME_HEX.test(v) || THEME_FUNC.test(v)) continue;
+        if (THEME_WORD.test(v) && !THEME_WORD_DENY.test(v)) continue;
+        err(`${where} 不是合法颜色（#hex / rgb() / hsl() / 具名色）：${v}`);
+      }
+    }
+  } else if (themeOnly) {
+    err(`${tag} 没有 tools 也没有 theme —— 这个插件什么都不做`);
+  }
+
   if (!existsSync(join(dir, 'README.md'))) warn(`${tag} 缺 README.md（应写清做什么、实际权限、只读声明的例外）`);
   if (existsSync(join(dir, 'node_modules'))) err(`${tag} 不要把 node_modules 提交进来（插件不该有依赖树）`);
 
-  if (!Array.isArray(m.tools) || !m.tools.length) { err(`${tag} tools 必须是非空数组`); continue; }
+  // 纯主题插件没有 tools：跳过工具校验（宿主侧同样允许 tools 缺省）
+  if (themeOnly) continue;
+  if (!Array.isArray(m.tools) || !m.tools.length) { err(`${tag} tools 必须是非空数组（纯主题插件请写 theme）`); continue; }
   const seen = new Set();
   for (const t of m.tools) {
     const tt = `${tag}.${t?.name}`;

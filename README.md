@@ -20,6 +20,10 @@ plugins/<name>/
 skills/<name>/
   SKILL.md         frontmatter：name（必需，等于目录名）/ version（可选）/ description
                    正文写「什么时候用、按什么步骤做、不要做什么」
+
+plugins/<name>/          # 纯主题插件（只有 theme、没有 tools）—— 没有 index.js
+  plugin.json      清单：name / version / description / theme{ label, description, tokens }
+  README.md        配色风格说明
 ```
 
 插件与技能的区别：**插件给 Agent 新增工具（执行代码），技能只是说明书（让模型把已有工具用对）**。
@@ -32,6 +36,12 @@ skills/<name>/
 | name | version | 工具 | 索引条目 |
 |---|---|---|---|
 | [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo`、`cc-safety-net` |
+| [theme-sakura](plugins/theme-sakura) | 0.1.0 | —（纯主题） | 待发布 |
+| [theme-midnight](plugins/theme-midnight) | 0.1.0 | —（纯主题） | 待发布 |
+
+两个 `theme-*` 是**纯数据主题插件**：`plugin.json` 里只有 `theme`、没有 `tools`，所以没有
+`index.js`、不需要信任确认、也不需要打开 `luban.plugins.enabled` —— 装上就能在 Luban 面板的
+「界面主题」下拉里选。详见 Luban 主仓的 `docs/luban-plugin-market.md` 第 5.2 节。
 
 ## 现有技能
 
@@ -70,6 +80,45 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 4. 自测：把目录拷进 `~/.luban/plugins/`，打开开关，手工调一次 `pl__<name>__<tool>`。
 
 字段契约的权威定义在 Luban 主仓的 [docs/tools.md](https://github.com/eppen/luban/blob/main/docs/tools.md)。
+
+### 纯主题插件（只有 theme，没有 tools）
+
+想给 Luban 面板换配色，不需要写任何代码 —— `plugin.json` 里只声明 `theme` 即可：
+
+```json
+{
+  "name": "theme-mine",
+  "version": "0.1.0",
+  "description": "我的主题：一句话说清配色风格",
+  "theme": {
+    "label": "我的主题",
+    "description": "浅色 / 深色、强调色风格",
+    "tokens": {
+      "bg": "#0f1220", "fg": "#e6e9f5", "panel": "#161a2e", "border": "#2a3050",
+      "accent": "#6c8cff", "accent-fg": "#0b0e1a", "muted": "#8a90b0", "code-bg": "#1a1f38",
+      "surface": "#161a2e", "surface-2": "#1e2440", "hover": "rgba(108,140,255,0.14)",
+      "link": "#7fb0ff", "ok": "#4fd1a5", "warn": "#e0b04a", "error": "#ff6b7a",
+      "radius-sm": "4", "radius": "8", "radius-lg": "12"
+    }
+  }
+}
+```
+
+要点：
+
+- **没有 `index.js`、没有 `tools`** —— 主题是数据不是代码，所以**不需要信任确认**，
+  也**不受 `luban.plugins.enabled` 影响**，装上就能在「界面主题」下拉里选。
+- **token 名必须在白名单内**：15 个颜色（`bg` `fg` `panel` `border` `accent` `accent-fg`
+  `muted` `code-bg` `surface` `surface-2` `hover` `link` `ok` `warn` `error`）+
+  4 个尺寸（`radius-sm` `radius` `radius-lg` `font-size`）。颜色 15 个**全填才生效**，
+  缺任何一个整份主题作废；尺寸可选，无单位自动补 `px`。
+- **值会被逐个校验**：拒 `;` `{}` `<>` 与 `url()` / `expression()`，颜色只收
+  `#rgb/#rrggbb` / `rgb()` / `rgba()` / `hsl()` / 具名色。不合法的值直接丢弃，
+  最坏的结果是「难看」，不会变成伪造的按钮。
+- 只影响 Luban 自己的面板（颜色 / 圆角 / 字号），**不动编辑器主题**，也改不了布局、加不了元素。
+- 选「跟随 VS Code 主题」即回到编辑器配色（清空 `luban.plugins.theme`）。
+
+参考实现：[theme-sakura](plugins/theme-sakura)（浅粉）、[theme-midnight](plugins/theme-midnight)（深蓝紫）。
 
 ## 新增一个技能
 

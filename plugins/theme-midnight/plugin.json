@@ -1,0 +1,29 @@
+{
+  "name": "theme-midnight",
+  "version": "0.1.0",
+  "description": "午夜主题：深蓝紫底 + 青蓝强调，对比度高。纯数据插件，只有 theme、没有 tools，不需要信任确认、也不需要打开「启用插件」。",
+  "theme": {
+    "label": "午夜",
+    "description": "深蓝紫底 + 青蓝强调，对比度高，适合深色工作区",
+    "tokens": {
+      "bg": "#0f1220",
+      "fg": "#e6e9f5",
+      "panel": "#161a2e",
+      "border": "#2a3050",
+      "accent": "#6c8cff",
+      "accent-fg": "#0b0e1a",
+      "muted": "#8a90b0",
+      "code-bg": "#1a1f38",
+      "surface": "#161a2e",
+      "surface-2": "#1e2440",
+      "hover": "rgba(108, 140, 255, 0.14)",
+      "link": "#7fb0ff",
+      "ok": "#4fd1a5",
+      "warn": "#e0b04a",
+      "error": "#ff6b7a",
+      "radius-sm": "4",
+      "radius": "8",
+      "radius-lg": "12"
+    }
+  }
+}

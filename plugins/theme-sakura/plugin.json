@@ -1,0 +1,29 @@
+{
+  "name": "theme-sakura",
+  "version": "0.1.0",
+  "description": "樱花主题：浅粉底 + 樱红强调，圆角偏大。纯数据插件，只有 theme、没有 tools，不需要信任确认、也不需要打开「启用插件」。",
+  "theme": {
+    "label": "樱花",
+    "description": "浅粉底 + 樱红强调，圆角偏大，适合浅色工作区",
+    "tokens": {
+      "bg": "#fdf6f8",
+      "fg": "#3d2b33",
+      "panel": "#fffafc",
+      "border": "#f0d4de",
+      "accent": "#e26fa4",
+      "accent-fg": "#ffffff",
+      "muted": "#9b7a88",
+      "code-bg": "#f7e8ee",
+      "surface": "#fffafc",
+      "surface-2": "#fbeef3",
+      "hover": "rgba(226, 111, 164, 0.10)",
+      "link": "#c94f86",
+      "ok": "#3f9d6e",
+      "warn": "#c98a2e",
+      "error": "#d64550",
+      "radius-sm": "6",
+      "radius": "10",
+      "radius-lg": "14"
+    }
+  }
+}
