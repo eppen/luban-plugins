@@ -49,6 +49,9 @@ plugins/<name>/          # 纯主题插件（只有 theme、没有 tools）—�
 |---|---|---|---|
 | [changelog-draft](skills/changelog-draft) | 0.1.0 | 按提交历史起草 CHANGELOG 条目（默认只给草稿） | `changelog-draft` |
 | [brooks-lint](skills/brooks-lint) | 0.1.0 | 基于十二本经典软件工程书籍的代码质量审查方法论（六个 decay risk 维度） | `brooks-lint` |
+| [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | 五轴代码评审与合并门禁（正确性 / 可读性 / 架构 / 安全 / 性能），发现分级为 Critical / Nit / Optional | `code-review-and-quality` |
+| [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | 系统化根因调试：复现 → 定位 → 缩小 → 修根因 → 补回归测试，含停线规则 | `debugging-and-error-recovery` |
+| [test-driven-development](skills/test-driven-development) | 0.1.0 | 红-绿-重构：先写失败测试再写最小实现，修 bug 先写复现测试 | `test-driven-development` |
 
 ## 手动安装
 
@@ -122,8 +125,9 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 
 ## 新增一个技能
 
-1. 建 `skills/<name>/`，里面只放 `SKILL.md`（有参考脚本可以一起放，但目录里**不要有**
-   `node_modules` / `.git` / 符号链接 —— 哈希跳过它们，装出来和仓库里就不一致了）。
+1. 建 `skills/<name>/`，`SKILL.md` 必需；附属清单 / 参考脚本放同目录（惯例 `references/`），
+   运行时用 `read_skill` 的 `file` 参数读。目录里**不要有**
+   `node_modules` / `.git` / 符号链接 —— 哈希跳过它们，装出来和仓库里就不一致。
 2. `SKILL.md` 的 frontmatter：
    ```yaml
    ---

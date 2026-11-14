@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T02:08:29Z",
+  "updatedAt": "2026-11-14T10:55:49Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -206,6 +206,93 @@
         "algo": "ed25519",
         "keyId": "registry-ci",
         "sig": "e9/VuEVrDkk7p9AjRamkuFROIIyixDL3SAZCq3+YdXDAd1NdaZztBqH+pvT0VpeIYFa6z1lSx+dOqbsAIhIbDw=="
+      }
+    },
+    {
+      "name": "code-review-and-quality",
+      "displayName": "五轴代码评审",
+      "description": "五轴代码评审与合并门禁：正确性 / 可读性 / 架构 / 安全 / 性能逐项核对，发现按 Critical / Nit / Optional 分级",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "code-review",
+        "quality",
+        "merge-gate"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/code-review-and-quality",
+        "target": "global"
+      },
+      "sourceSha256": "881baa467234233abfb279edc5f3b42a936c4029756f0b88a935c8f3e6d3c283",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "技能无执行能力；正文只提供评审方法论（五轴、分级、合并标准、自我合理化对照表），只要求 read_file / grep / git 这类只读操作，不要求修改文件或执行会写盘/联网的命令。移植自 addyosmani/agent-skills（MIT），正文中文化，references/ 下两份清单保留英文原文。"
+      }
+    },
+    {
+      "name": "debugging-and-error-recovery",
+      "displayName": "系统化调试",
+      "description": "系统化根因调试：先复现再定位再缩小，修根因并补回归测试，用停线规则挡住边猜边改",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "debugging",
+        "root-cause",
+        "testing"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/debugging-and-error-recovery",
+        "target": "global"
+      },
+      "sourceSha256": "6820eb13aabae077d9e9da3cfc56732aaac7c3bc52c2a13d9044ba48a87ca5ee",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "技能无执行能力；正文只提供调试流程（停线规则、分诊清单、二分定位、回归守卫），命令限于跑测试 / 构建 / git bisect 这类只读或可回滚操作，不改用户代码。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "test-driven-development",
+      "displayName": "测试驱动开发",
+      "description": "红-绿-重构：先写失败测试再写最小实现，修 bug 先写复现测试，把测试当成完成证据",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "testing",
+        "tdd",
+        "quality"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/test-driven-development",
+        "target": "global"
+      },
+      "sourceSha256": "867a8adfb54c0e43ef388dbad6bb5fc2ea9cccf47c16b5ea297120333cc17fe6",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "技能无执行能力；正文只提供 TDD 流程（红-绿-重构、断言速查、自我合理化对照表），只要求写测试与跑测试命令，不涉及发布/推送。移植自 addyosmani/agent-skills（MIT），正文中文化，references/testing-patterns.md 保留英文原文。"
       }
     },
     {

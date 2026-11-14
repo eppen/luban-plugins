@@ -44,6 +44,9 @@ skills/<name>/
 | name | version | 説明 | レジストリエントリ |
 |---|---|---|---|
 | [changelog-draft](skills/changelog-draft) | 0.1.0 | コミット履歴から CHANGELOG エントリを起草する（デフォルトは草稿のみ） | `changelog-draft` |
+| [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | 五軸コードレビューとマージゲート（正確性 / 可読性 / アーキテクチャ / セキュリティ / 性能）、指摘は Critical / Nit / Optional に分類 | `code-review-and-quality` |
+| [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | 体系的な根本原因デバッグ：再現 → 特定 → 最小化 → 原因修正 → 回帰テスト、停線ルール付き | `debugging-and-error-recovery` |
+| [test-driven-development](skills/test-driven-development) | 0.1.0 | レッド・グリーン・リファクタ：まず失敗するテスト、次に最小実装。バグ修正は再現テストから | `test-driven-development` |
 
 ## 手動インストール
 
@@ -86,8 +89,9 @@ Luban で `luban.plugins.enabled` をオンにしてください（サイドバ�
 
 ## スキルを追加する
 
-1. `skills/<name>/` を作成し、そこには `SKILL.md` だけを置きます（参考スクリプトを一緒に置いても
-   構いませんが、ディレクトリに `node_modules` / `.git` / シンボリックリンクを**入れないで
+1. `skills/<name>/` を作成し、`SKILL.md` は必須です。参考チェックリスト / スクリプトは
+   同梱できます（慣例は `references/`、実行時は `read_skill` の `file` 引数で読みます）。
+   ただし、ディレクトリに `node_modules` / `.git` / シンボリックリンクを**入れないで
    ください** — ハッシュ計算ではこれらがスキップされるため、インストール先がリポジトリと
    不一致になります）。
 2. `SKILL.md` の frontmatter:
