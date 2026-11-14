@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-14T10:55:49Z",
+  "updatedAt": "2026-11-14T10:57:25Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -235,6 +235,11 @@
       "review": {
         "status": "pending",
         "notes": "技能无执行能力；正文只提供评审方法论（五轴、分级、合并标准、自我合理化对照表），只要求 read_file / grep / git 这类只读操作，不要求修改文件或执行会写盘/联网的命令。移植自 addyosmani/agent-skills（MIT），正文中文化，references/ 下两份清单保留英文原文。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "kpdQvW2W7mlOz4f/KQxd1Nzx6lahavVWtF1VyMQ/uGtXdkxTnTaFhvy4w2VivirIhytdjEYUMRT1E3BwbAGhDA=="
       }
     },
     {
@@ -264,6 +269,11 @@
       "review": {
         "status": "pending",
         "notes": "技能无执行能力；正文只提供调试流程（停线规则、分诊清单、二分定位、回归守卫），命令限于跑测试 / 构建 / git bisect 这类只读或可回滚操作，不改用户代码。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "A0bWYsruWH7vG+/ZanoOV6pzNi8L13wx+SNFcqADzi+841nHkxshY6PXWmn0BRjK2Ov1jHp9ogcH0ZasVjrpAA=="
       }
     },
     {
@@ -293,6 +303,11 @@
       "review": {
         "status": "pending",
         "notes": "技能无执行能力；正文只提供 TDD 流程（红-绿-重构、断言速查、自我合理化对照表），只要求写测试与跑测试命令，不涉及发布/推送。移植自 addyosmani/agent-skills（MIT），正文中文化，references/testing-patterns.md 保留英文原文。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "VnasXOn4aEcP0tJStrfirYg1pNT2gE5kv0/+FsUCym6p7YEmOAvjo1QpYvQtZv2H919K90g6dsQRdfRgaCHNBQ=="
       }
     },
     {
