@@ -44,6 +44,7 @@ permission concerns, so they share the same registry but with lighter validation
 | name | version | description | registry entries |
 |---|---|---|---|
 | [changelog-draft](skills/changelog-draft) | 0.1.0 | Drafts CHANGELOG entries from commit history (draft only by default) | `changelog-draft` |
+| [brooks-lint](skills/brooks-lint) | 0.1.0 | Code quality review methodology drawn from twelve classic software-engineering books (six decay-risk dimensions) | `brooks-lint` |
 | [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | Five-axis review as a merge gate (correctness / readability / architecture / security / performance), findings graded Critical / Nit / Optional | `code-review-and-quality` |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | Systematic root-cause debugging: reproduce → locate → shrink → fix the cause → regression test, with stop-the-line rules | `debugging-and-error-recovery` |
 | [test-driven-development](skills/test-driven-development) | 0.1.0 | Red-green-refactor: a failing test first, then the smallest implementation; reproduce bugs in a test before fixing | `test-driven-development` |

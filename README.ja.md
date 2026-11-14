@@ -44,6 +44,7 @@ skills/<name>/
 | name | version | 説明 | レジストリエントリ |
 |---|---|---|---|
 | [changelog-draft](skills/changelog-draft) | 0.1.0 | コミット履歴から CHANGELOG エントリを起草する（デフォルトは草稿のみ） | `changelog-draft` |
+| [brooks-lint](skills/brooks-lint) | 0.1.0 | 12 冊の古典的ソフトウェア工学書に基づくコード品質レビュー手法（6 つの decay risk 次元） | `brooks-lint` |
 | [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | 五軸コードレビューとマージゲート（正確性 / 可読性 / アーキテクチャ / セキュリティ / 性能）、指摘は Critical / Nit / Optional に分類 | `code-review-and-quality` |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | 体系的な根本原因デバッグ：再現 → 特定 → 最小化 → 原因修正 → 回帰テスト、停線ルール付き | `debugging-and-error-recovery` |
 | [test-driven-development](skills/test-driven-development) | 0.1.0 | レッド・グリーン・リファクタ：まず失敗するテスト、次に最小実装。バグ修正は再現テストから | `test-driven-development` |
