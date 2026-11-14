@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-13T13:53:13Z",
+  "updatedAt": "2026-11-14T00:30:00Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -172,6 +172,35 @@
         "algo": "ed25519",
         "keyId": "registry-ci",
         "sig": "vvpXf4ApzGh1JpT7B7GuLe4n75s/71GAznRNijP2j3u4LZhkhBZBa36ZjqnhA2mvJrRYyBWSlthujANuelMABA=="
+      }
+    },
+    {
+      "name": "brooks-lint",
+      "displayName": "Brooks-Lint 代码质量审查",
+      "description": "基于十二本经典软件工程书籍的代码质量审查方法论：从六个 decay risk 维度诊断代码，输出结构化发现与健康评分",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "code-review",
+        "architecture",
+        "quality"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/brooks-lint",
+        "target": "global"
+      },
+      "sourceSha256": "19764b4fc4f450d62fe5c49716a2915937c60d94945a48a90638064dca7aaa8e",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "技能无执行能力；正文只提供代码审查方法论（六个 decay risk 维度、Iron Law 诊断流程、报告模板），不要求执行任何命令或修改文件。移植自 hyhmrright/brooks-lint（MIT）。"
       }
     }
   ]

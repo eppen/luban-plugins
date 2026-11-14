@@ -38,6 +38,7 @@ skills/<name>/
 | name | version | 说明 | 索引条目 |
 |---|---|---|---|
 | [changelog-draft](skills/changelog-draft) | 0.1.0 | 按提交历史起草 CHANGELOG 条目（默认只给草稿） | `changelog-draft` |
+| [brooks-lint](skills/brooks-lint) | 0.1.0 | 基于十二本经典软件工程书籍的代码质量审查方法论（六个 decay risk 维度） | `brooks-lint` |
 
 ## 手动安装
 
