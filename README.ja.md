@@ -48,6 +48,22 @@ skills/<name>/
 | [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | 五軸コードレビューとマージゲート（正確性 / 可読性 / アーキテクチャ / セキュリティ / 性能）、指摘は Critical / Nit / Optional に分類 | `code-review-and-quality` |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | 体系的な根本原因デバッグ：再現 → 特定 → 最小化 → 原因修正 → 回帰テスト、停線ルール付き | `debugging-and-error-recovery` |
 | [test-driven-development](skills/test-driven-development) | 0.1.0 | レッド・グリーン・リファクタ：まず失敗するテスト、次に最小実装。バグ修正は再現テストから | `test-driven-development` |
+| [interview-me](skills/interview-me) | 0.1.0 | 1 問ずつ、自分の推測を添えて質問し、本当の要件を引き出す | `interview-me` |
+| [spec-driven-development](skills/spec-driven-development) | 0.1.0 | コードを書く前に構造化された仕様（目的 / コマンド / 構成 / 文体 / テスト / 境界）を作り、段階ごとに確認 | `spec-driven-development` |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown) | 0.1.0 | 作業を受け入れ基準と検証手順付きの小タスクに分解し、縦スライスとチェックポイントを置く | `planning-and-task-breakdown` |
+| [incremental-implementation](skills/incremental-implementation) | 0.1.0 | 薄いスライスで提供：実装 → テスト → 検証 → コミットを繰り返す | `incremental-implementation` |
+| [api-and-interface-design](skills/api-and-interface-design) | 0.1.0 | 契約ファースト、統一したエラー意味論、境界での検証、加算的な変更、冪等キーの履行 | `api-and-interface-design` |
+| [frontend-ui-engineering](skills/frontend-ui-engineering) | 0.1.0 | 本番品質の UI：コンポーネント設計、状態の階層、デザインシステム準拠、WCAG 2.1 AA、レスポンシブ | `frontend-ui-engineering` |
+| [code-simplification](skills/code-simplification) | 0.1.0 | 挙動を変えずにコードを分かりやすくする（構造 / 命名 / 冗長のシグナルごとに 1 つずつ） | `code-simplification` |
+| [git-workflow-and-versioning](skills/git-workflow-and-versioning) | 0.1.0 | トランクベース、原子的なコミット、変更規模の管理、タグ + セマンティックバージョン + 利用者向け CHANGELOG | `git-workflow-and-versioning` |
+| [documentation-and-adrs](skills/documentation-and-adrs) | 0.1.0 | ADR で意思決定の理由を残し、コメントは why のみ、ドキュメントのドリフトを git 履歴で判定 | `documentation-and-adrs` |
+| [deprecation-and-migration](skills/deprecation-and-migration) | 0.1.0 | 代替品を先に作り、利用者ごとに移行してから廃止。スキーマは expand / contract で段階的に | `deprecation-and-migration` |
+| [security-and-hardening](skills/security-and-hardening) | 0.1.0 | 脅威モデリングから加固へ：インジェクション、認可、SSRF、レート制限、秘密情報、サプライチェーン、プライバシー、LLM | `security-and-hardening` |
+| [performance-optimization](skills/performance-optimization) | 0.1.0 | まず計測し、真のボトルネックを 1 つ直し、同じ方法で再計測。ノイズを超えた変更だけ残す | `performance-optimization` |
+| [observability-and-instrumentation](skills/observability-and-instrumentation) | 0.1.0 | オンコールの問いから信号を選ぶ：構造化ログと相関 ID、RED / USE メトリクス、トレース、症状ベースのアラートとランブック | `observability-and-instrumentation` |
+| [shipping-and-launch](skills/shipping-and-launch) | 0.1.0 | リリース前チェック、フィーチャーフラグのライフサイクル、段階的ロールアウトの閾値、エラーバジェット、ロールバック計画 | `shipping-and-launch` |
+| [ci-cd-and-automation](skills/ci-cd-and-automation) | 0.1.0 | スキップできない品質ゲート（lint / 型 / テスト / ビルド / 監査 / バンドル）と CI 高速化の順序 | `ci-cd-and-automation` |
+| [source-driven-development](skills/source-driven-development) | 0.1.0 | 依存ファイルからバージョンを特定し、公式ドキュメントで方針を決め、根拠を引用する（未検証は明示） | `source-driven-development` |
 
 ## 手動インストール
 

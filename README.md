@@ -52,6 +52,22 @@ plugins/<name>/          # 纯主题插件（只有 theme、没有 tools）—�
 | [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | 五轴代码评审与合并门禁（正确性 / 可读性 / 架构 / 安全 / 性能），发现分级为 Critical / Nit / Optional | `code-review-and-quality` |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | 系统化根因调试：复现 → 定位 → 缩小 → 修根因 → 补回归测试，含停线规则 | `debugging-and-error-recovery` |
 | [test-driven-development](skills/test-driven-development) | 0.1.0 | 红-绿-重构：先写失败测试再写最小实现，修 bug 先写复现测试 | `test-driven-development` |
+| [interview-me](skills/interview-me) | 0.1.0 | 一次一问地挖出真实需求（每题附带自己的猜测），确认到能预测用户反应再动手 | `interview-me` |
+| [spec-driven-development](skills/spec-driven-development) | 0.1.0 | 写代码前先写结构化规格（目标 / 命令 / 结构 / 风格 / 测试 / 边界），逐阶段人工确认 | `spec-driven-development` |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown) | 0.1.0 | 把工作拆成带验收标准与验证步骤的小任务：纵向切片、按依赖排序、阶段间设检查点 | `planning-and-task-breakdown` |
+| [incremental-implementation](skills/incremental-implementation) | 0.1.0 | 薄切片交付：实现一小块、测、验、提交，再扩下一块，不一次写完整个功能 | `incremental-implementation` |
+| [api-and-interface-design](skills/api-and-interface-design) | 0.1.0 | 契约先行、错误语义统一、只在边界校验、只做加法，并真正兑现幂等键 | `api-and-interface-design` |
+| [frontend-ui-engineering](skills/frontend-ui-engineering) | 0.1.0 | 生产级界面：组件架构、状态层次、设计系统对齐、WCAG 2.1 AA、响应式 | `frontend-ui-engineering` |
+| [code-simplification](skills/code-simplification) | 0.1.0 | 在不改变行为的前提下把代码改清楚：先读懂篱笆，再按结构 / 命名 / 冗余信号一次一步简化 | `code-simplification` |
+| [git-workflow-and-versioning](skills/git-workflow-and-versioning) | 0.1.0 | 主干开发、原子提交、改动规模控制，以及 tag + 语义化版本 + 面向使用者的 changelog | `git-workflow-and-versioning` |
+| [documentation-and-adrs](skills/documentation-and-adrs) | 0.1.0 | 用 ADR 留住决策的「为什么」，注释只写 why，并按 git 历史判定文档是否已漂移 | `documentation-and-adrs` |
+| [deprecation-and-migration](skills/deprecation-and-migration) | 0.1.0 | 先建替代品再下线旧系统，逐个消费者迁移；数据库 schema 用 expand / contract 分阶段改 | `deprecation-and-migration` |
+| [security-and-hardening](skills/security-and-hardening) | 0.1.0 | 先威胁建模再加固：注入、鉴权、SSRF、限流、密钥、依赖供应链、隐私与 LLM 安全 | `security-and-hardening` |
+| [performance-optimization](skills/performance-optimization) | 0.1.0 | 先测量再优化：建基线、定位真瓶颈、同样方法复测，超出噪声才保留，并用预算防回归 | `performance-optimization` |
+| [observability-and-instrumentation](skills/observability-and-instrumentation) | 0.1.0 | 从 on-call 会问的问题出发选信号：结构化日志 + 关联 ID、RED / USE 指标、链路、症状告警与 runbook | `observability-and-instrumentation` |
+| [shipping-and-launch](skills/shipping-and-launch) | 0.1.0 | 上线前清单、feature flag 生命周期、分阶段放量与回退阈值、错误预算门禁与回滚方案 | `shipping-and-launch` |
+| [ci-cd-and-automation](skills/ci-cd-and-automation) | 0.1.0 | 把 lint / 类型 / 测试 / 构建 / 审计 / 体积做成不可跳过的质量门禁，并给出 CI 提速顺序 | `ci-cd-and-automation` |
+| [source-driven-development](skills/source-driven-development) | 0.1.0 | 按依赖文件识别版本、抓官方文档定模式、逐条给出可核对引用，查不到就标未验证 | `source-driven-development` |
 
 ## 手动安装
 

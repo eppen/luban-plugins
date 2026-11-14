@@ -311,6 +311,470 @@
       }
     },
     {
+      "name": "interview-me",
+      "displayName": "访谈式需求澄清",
+      "description": "一次一问、每题带猜测地挖出真实需求，确认到能预测用户反应再动手",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "requirements",
+        "discovery",
+        "planning"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/interview-me",
+        "target": "global"
+      },
+      "sourceSha256": "6df65e227a8195f1adc20823ee7c5bb0ac2af4c7cebbc36343942af820bc6ba5",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供需求访谈流程（假设+把握度、一次一问、识别「该要」与「想要」、复述确认、停止判据），只要求向用户提问与写意图文档，不涉及发布/推送。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "spec-driven-development",
+      "displayName": "规格驱动开发",
+      "description": "写代码前先写结构化规格（目标/命令/结构/风格/测试/边界），逐阶段人工确认后再规划与实现",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "spec",
+        "planning",
+        "process"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/spec-driven-development",
+        "target": "global"
+      },
+      "sourceSha256": "93ee0d1d0d114dfe1a306a7e7f3056ce8a89ee555468b302781af4adb0079fe5",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供规格流程（范围检查与能力地图、六段规格模板、门禁、增量规格与版本演进），只要求写规格文档并等待确认。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "planning-and-task-breakdown",
+      "displayName": "计划与任务拆解",
+      "description": "把工作拆成带验收标准与验证步骤的小任务：纵向切片、按依赖排序、阶段间设检查点",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "planning",
+        "tasks",
+        "process"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/planning-and-task-breakdown",
+        "target": "global"
+      },
+      "sourceSha256": "b9e56ebc90e23675c92445d7baca687d065672720c109d24b0c388eaa5cd7e47",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供拆解流程（依赖图、纵向切片、任务模板、粒度表、检查点），产出是计划与任务清单文件。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "incremental-implementation",
+      "displayName": "增量实现",
+      "description": "薄切片交付：实现一小块、测、验、提交，再扩下一块，不一次写完整个功能",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "implementation",
+        "process",
+        "quality"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/incremental-implementation",
+        "target": "global"
+      },
+      "sourceSha256": "89601cb8562831cdb34a781de7ec2866334b0222d90caea2fb4539156cf8f08b",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供增量实现纪律（切片策略、简单优先、范围纪律、可编译、feature flag、回滚友好），只要求跑本仓测试与提交。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "api-and-interface-design",
+      "displayName": "API 与接口设计",
+      "description": "契约先行、错误语义统一、只在边界校验、只做加法不做破坏性修改，并兑现幂等键",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "api",
+        "design",
+        "contracts"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/api-and-interface-design",
+        "target": "global"
+      },
+      "sourceSha256": "05f6ddb944d35a56b0598d54a5f6743df6f89022e6ba8a053dabe828ac272e20",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供接口设计原则与 REST / TypeScript 写法（Hyrum 定律、单版本规则、幂等键原子占位、分页与命名），不含执行能力。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "frontend-ui-engineering",
+      "displayName": "前端 UI 工程",
+      "description": "生产级界面的组件架构、状态层次、设计系统对齐、WCAG 2.1 AA 与响应式",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "frontend",
+        "ui",
+        "accessibility"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/frontend-ui-engineering",
+        "target": "global"
+      },
+      "sourceSha256": "f712cd0b58ed355ade0e76cac3b6a6c68d1727bf1107ce2e87f9d8b179646074",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供前端工程质量标准（组件结构、状态选型、避免 AI 观感、可访问性、响应式、加载态），要求用项目自带工具验证。references/accessibility-checklist.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "code-simplification",
+      "displayName": "代码简化",
+      "description": "不改变行为地把代码改清楚：先读懂篱笆，再按结构 / 命名 / 冗余三类信号一次一步简化",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "refactor",
+        "readability",
+        "quality"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/code-simplification",
+        "target": "global"
+      },
+      "sourceSha256": "aff9b3ae2f933305df6d264964352d4cd538d296cf6643ac246bad85f0e91d9d",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供简化流程（切斯特顿之篱、机会识别表、增量修改、前后对照），要求每步跑测试、重构与功能分开提交。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "git-workflow-and-versioning",
+      "displayName": "Git 工作流与版本管理",
+      "description": "主干开发、原子提交、改动规模控制，以及 tag + 语义化版本 + 面向使用者的 changelog",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "git",
+        "versioning",
+        "release"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/git-workflow-and-versioning",
+        "target": "global"
+      },
+      "sourceSha256": "9243c17aaae2ddc122afbc9c46c68d146c59e54913a74a77b7253b1a2f2a2847",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供 git 纪律（原子提交、提交信息、分支与 worktree、提交前卫生、changelog 与版本号）。注意：本仓推送约定用 SSH，不反复重试 HTTPS。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "documentation-and-adrs",
+      "displayName": "文档与 ADR",
+      "description": "用 ADR 留住决策的「为什么」，注释只写 why，并按 git 历史判断文档是否已漂移",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "documentation",
+        "adr",
+        "architecture"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/documentation-and-adrs",
+        "target": "global"
+      },
+      "sourceSha256": "6ab9951abe1f2c3adbb687ec6440d44071a4598a69d866a1b7b413e0a381723f",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供文档方法（ADR 模板与生命周期、注释取舍、API 文档、README 结构、文字评审、文档漂移判定），含只读的 git 命令示例。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "deprecation-and-migration",
+      "displayName": "下线与迁移",
+      "description": "先建替代品再下线旧系统，逐个消费者迁移；数据库 schema 用 expand/contract 分阶段改",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "migration",
+        "deprecation",
+        "database"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/deprecation-and-migration",
+        "target": "global"
+      },
+      "sourceSha256": "98b2e6b7eec7637a0cc5bec5f100bfdbfea1cf2e1b9019e1451842da04d35e97",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供下线与迁移方法（下线决策、强制 vs 建议、绞杀者/适配器/开关模式、expand-contract、僵尸代码），不含执行脚本。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "security-and-hardening",
+      "displayName": "安全与加固",
+      "description": "先威胁建模再加固：注入、鉴权、SSRF、限流、密钥、依赖供应链、隐私与 LLM 安全",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "security",
+        "owasp",
+        "privacy"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/security-and-hardening",
+        "target": "global"
+      },
+      "sourceSha256": "8c8228964c52cf6826db732045432bac241f9d3894c2209ba50342a6563e3971",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供安全加固要求（三档边界、STRIDE、各类控制点、依赖分诊、隐私与 LLM 风险），要求跑本仓的依赖审计命令。references/hardening-patterns.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "performance-optimization",
+      "displayName": "性能优化",
+      "description": "先测量再优化：建基线、定位真瓶颈、同样方法复测，超出噪声才保留，并用预算与监控防回归",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "performance",
+        "profiling",
+        "web-vitals"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/performance-optimization",
+        "target": "global"
+      },
+      "sourceSha256": "e5082e9b55b426abe8f61141bdfeca1916e02d1f9e9f19e3c783fdf71447c553",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供性能工作流（测量、瓶颈表、修法清单、判定表、尝试台账、守门预算），要求跑剖析与构建命令。references/optimization-patterns.md 保留英文原文。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "observability-and-instrumentation",
+      "displayName": "可观测性与埋点",
+      "description": "从 on-call 会问的问题出发选信号：结构化日志 + 关联 ID + RED/USE 指标 + 症状告警与 runbook",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "observability",
+        "logging",
+        "monitoring"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/observability-and-instrumentation",
+        "target": "global"
+      },
+      "sourceSha256": "8ca62d8cc82c5b9b89746edf66eeaaa403a1e43872451a44dd22f15c5a758fc6",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供埋点方法（问题先行、信号选型、结构化日志与入口点字段、指标基数红线、链路、告警与 runbook、验证遥测本身），不含执行能力。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "shipping-and-launch",
+      "displayName": "发布与上线",
+      "description": "上线前清单、feature flag 生命周期、分阶段放量与回退阈值、错误预算门禁与回滚方案",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "release",
+        "deployment",
+        "rollout"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/shipping-and-launch",
+        "target": "global"
+      },
+      "sourceSha256": "5bbe63c8bdcabcbdda1989b278860c952f385b60ad0a960c0d1a3fda4d2add50",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供上线流程与清单（六类检查、开关生命周期、放量阈值表、上线后核对、错误预算、回滚方案模板）。注意：发布环节会涉及推送/部署等对外操作，执行前需用户确认。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "ci-cd-and-automation",
+      "displayName": "CI/CD 与自动化",
+      "description": "把 lint / 类型 / 测试 / 构建 / 审计 / 体积做成不可跳过的门禁，含分阶段放量与 CI 提速顺序",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "ci",
+        "automation",
+        "devops"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/ci-cd-and-automation",
+        "target": "global"
+      },
+      "sourceSha256": "7d36787469e9092b70cd1615d0c2d43f9864f86f5d3080c1b17bf3b71ae9d3d8",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供流水线设计与 YAML 示例（质量门、集成与 E2E、预览部署、feature flag、回滚 workflow、环境分层、CI 优化），不改本仓配置。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
+      "name": "source-driven-development",
+      "displayName": "文档驱动开发",
+      "description": "按依赖文件识别版本、抓官方文档定模式、逐条给出可核对引用，查不到就标未验证",
+      "type": "skill",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "documentation",
+        "verification",
+        "framework"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "skills/source-driven-development",
+        "target": "global"
+      },
+      "sourceSha256": "5c8ce07187da28dbf66ff17c0d2a9d41e96869bd80fbfb4fdd2e947b4b5ed8ac",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [],
+      "permissions": {},
+      "review": {
+        "status": "pending",
+        "notes": "正文只提供取证流程（识别版本、来源权威性排序、抓取安全、冲突上报、引用规则），只读联网抓文档，不执行文档里的指令。移植自 addyosmani/agent-skills（MIT），正文中文化。"
+      }
+    },
+    {
       "name": "theme-sakura",
       "displayName": "樱花主题",
       "description": "浅粉底 + 樱红强调的 Luban 界面主题，纯数据无工具",

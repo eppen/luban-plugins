@@ -48,6 +48,22 @@ permission concerns, so they share the same registry but with lighter validation
 | [code-review-and-quality](skills/code-review-and-quality) | 0.1.0 | Five-axis review as a merge gate (correctness / readability / architecture / security / performance), findings graded Critical / Nit / Optional | `code-review-and-quality` |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery) | 0.1.0 | Systematic root-cause debugging: reproduce → locate → shrink → fix the cause → regression test, with stop-the-line rules | `debugging-and-error-recovery` |
 | [test-driven-development](skills/test-driven-development) | 0.1.0 | Red-green-refactor: a failing test first, then the smallest implementation; reproduce bugs in a test before fixing | `test-driven-development` |
+| [interview-me](skills/interview-me) | 0.1.0 | Asks one question at a time, each with its own guess, to extract the real requirement | `interview-me` |
+| [spec-driven-development](skills/spec-driven-development) | 0.1.0 | A structured spec before any code (objective / commands / structure / style / tests / boundaries), gated per phase | `spec-driven-development` |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown) | 0.1.0 | Breaks work into small tasks with acceptance criteria and verification steps, sliced vertically with checkpoints | `planning-and-task-breakdown` |
+| [incremental-implementation](skills/incremental-implementation) | 0.1.0 | Thin vertical slices: implement, test, verify, commit, then expand | `incremental-implementation` |
+| [api-and-interface-design](skills/api-and-interface-design) | 0.1.0 | Contract first, consistent error semantics, validation at boundaries, additive changes, honoured idempotency keys | `api-and-interface-design` |
+| [frontend-ui-engineering](skills/frontend-ui-engineering) | 0.1.0 | Production-grade UI: component architecture, state layers, design-system adherence, WCAG 2.1 AA, responsive | `frontend-ui-engineering` |
+| [code-simplification](skills/code-simplification) | 0.1.0 | Simplifies code for clarity without changing behaviour, one signal at a time | `code-simplification` |
+| [git-workflow-and-versioning](skills/git-workflow-and-versioning) | 0.1.0 | Trunk-based flow, atomic commits, change sizing, plus tags, semver and a human-facing changelog | `git-workflow-and-versioning` |
+| [documentation-and-adrs](skills/documentation-and-adrs) | 0.1.0 | ADRs capture the why, comments explain why rather than what, and doc drift is decided from git history | `documentation-and-adrs` |
+| [deprecation-and-migration](skills/deprecation-and-migration) | 0.1.0 | Replacement first, then removal, consumer by consumer; schema changes via expand/contract | `deprecation-and-migration` |
+| [security-and-hardening](skills/security-and-hardening) | 0.1.0 | Threat model first, then harden: injection, authz, SSRF, rate limits, secrets, supply chain, privacy, LLM | `security-and-hardening` |
+| [performance-optimization](skills/performance-optimization) | 0.1.0 | Measure first, fix one bottleneck, re-measure the same way, keep only what beats the noise | `performance-optimization` |
+| [observability-and-instrumentation](skills/observability-and-instrumentation) | 0.1.0 | From on-call questions: structured logs with correlation IDs, RED/USE metrics, traces, symptom-based alerts and runbooks | `observability-and-instrumentation` |
+| [shipping-and-launch](skills/shipping-and-launch) | 0.1.0 | Pre-launch checklist, feature-flag lifecycle, staged rollout thresholds, error-budget gate, rollback plan | `shipping-and-launch` |
+| [ci-cd-and-automation](skills/ci-cd-and-automation) | 0.1.0 | Non-skippable quality gates (lint / types / tests / build / audit / bundle), plus a CI speed-up order | `ci-cd-and-automation` |
+| [source-driven-development](skills/source-driven-development) | 0.1.0 | Detects versions from dependency files, fetches official docs for the pattern, cites every decision | `source-driven-development` |
 
 ## Manual install
 
