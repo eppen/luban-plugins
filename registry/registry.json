@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-18T07:11:24Z",
+  "updatedAt": "2026-11-18T07:12:43Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -1072,6 +1072,11 @@
         "reviewedBy": "liuhualiang",
         "reviewedAt": "2026-11-18T07:10:00Z",
         "notes": "两个工具声明 readOnly，实现只用 fs.readdirSync/statSync/readFileSync 读 ~/.claude/projects/ 下的 jsonl，不写盘/不起子进程/不联网，与 permissions(fsRead=true,其余false) 一致。read 传 path 时可读用户显式指定的 jsonl。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "registry-ci",
+        "sig": "D+n5VOvS6z6/qj2RyoA17TYb4jDX0iPnplR/vB4P1a9u5x18JGg7CkmlKEN6dJmujRj0MZwEFU0WdDN7ZlUTAw=="
       }
     }
   ]
