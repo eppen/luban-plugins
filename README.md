@@ -36,6 +36,8 @@ plugins/<name>/          # 纯主题插件（只有 theme、没有 tools）—�
 | name | version | 工具 | 索引条目 |
 |---|---|---|---|
 | [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo`、`cc-safety-net` |
+| [claude-sessions](plugins/claude-sessions) | 0.1.0 | `list`、`read` | `claude-sessions` |
+| [cursor-sessions](plugins/cursor-sessions) | 0.1.0 | `list`、`read`、`search` | `cursor-sessions` |
 | [theme-sakura](plugins/theme-sakura) | 0.1.0 | —（纯主题） | 待发布 |
 | [theme-midnight](plugins/theme-midnight) | 0.1.0 | —（纯主题） | 待发布 |
 

@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-18T07:12:43Z",
+  "updatedAt": "2026-11-18T07:55:22Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -1077,6 +1077,145 @@
         "algo": "ed25519",
         "keyId": "registry-ci",
         "sig": "D+n5VOvS6z6/qj2RyoA17TYb4jDX0iPnplR/vB4P1a9u5x18JGg7CkmlKEN6dJmujRj0MZwEFU0WdDN7ZlUTAw=="
+      }
+    },
+    {
+      "name": "cursor-sessions",
+      "displayName": "Cursor 会话回看",
+      "description": "回看 Cursor 的会话记录：列会话、读正文、全文搜索（只读 Cursor 的 state.vscdb 与 conversation-search.db）",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "liuhualiang",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "cursor",
+        "sessions",
+        "history"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/cursor-sessions",
+        "target": "global"
+      },
+      "sourceSha256": "26c0a457354e9b5bbce07423c8a9353a65d527e2d512cce8bf8e4d763b65b58d",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [
+        {
+          "name": "list",
+          "description": "列出本机 Cursor 的会话（按最后活动时间倒序，含 composerId、标题、时间、所属项目路径、消息数）。先用它找到目标会话，再用 read 读正文。",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "workspace": {
+                "type": "string",
+                "description": "可选。按项目路径子串过滤（不区分大小写，如 luban）。不传则列出全部项目。"
+              },
+              "limit": {
+                "type": "number",
+                "description": "可选。最多列出多少个会话，默认 20，上限 200。"
+              },
+              "includeArchived": {
+                "type": "boolean",
+                "description": "可选。是否包含已归档会话，默认 false。"
+              },
+              "includeSubagents": {
+                "type": "boolean",
+                "description": "可选。是否包含子代理（subagent）会话，默认 false。"
+              },
+              "withMessageCount": {
+                "type": "boolean",
+                "description": "可选。是否统计每个会话的消息数（多几次库查询），默认 true。"
+              }
+            }
+          }
+        },
+        {
+          "name": "read",
+          "description": "读取单个 Cursor 会话，把气泡（bubble）还原成可读的用户/助手对话。支持分页。",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "composerId": {
+                "type": "string",
+                "description": "会话 ID（list 返回的 composerId）。"
+              },
+              "offset": {
+                "type": "number",
+                "description": "可选。从第几个气泡开始返回（0 起），默认 0。"
+              },
+              "limit": {
+                "type": "number",
+                "description": "可选。最多返回多少个气泡，默认 40，上限 200。"
+              },
+              "showThinking": {
+                "type": "boolean",
+                "description": "可选。是否显示助手的思考（thinking）段，默认 false。"
+              },
+              "showToolUse": {
+                "type": "boolean",
+                "description": "可选。是否显示助手的工具调用（名称 + 参数摘要），默认 true。"
+              },
+              "maxChars": {
+                "type": "number",
+                "description": "可选。输出正文上限字符数，默认 8000，上限 40000。"
+              }
+            },
+            "required": [
+              "composerId"
+            ]
+          }
+        },
+        {
+          "name": "search",
+          "description": "全文搜索 Cursor 会话内容。优先用 Cursor 自带的 FTS5 索引（conversation-search.db，毫秒级）；索引缺失时回退扫描最近的会话。",
+          "readOnly": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "要搜索的关键词。多个词按 AND 处理；不支持 FTS 运算符语法。"
+              },
+              "limit": {
+                "type": "number",
+                "description": "可选。最多返回多少条命中，默认 10，上限 50。"
+              },
+              "includeArchived": {
+                "type": "boolean",
+                "description": "可选。是否搜索已归档会话，默认 false。"
+              },
+              "scanLimit": {
+                "type": "number",
+                "description": "可选。FTS 索引不可用、回退扫描时最多扫多少个最近会话，默认 50，上限 300。"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      ],
+      "permissions": {
+        "fsRead": true,
+        "fsWrite": false,
+        "shell": true,
+        "net": false,
+        "env": true
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "liuhualiang",
+        "reviewedAt": "2026-11-18T07:53:27Z",
+        "notes": "三个工具都声明 readOnly，实现只用 fs.existsSync/statSync 与 SQLite 只读快照（file://…?immutable=1 + readOnly）读 Cursor 用户目录下的 state.vscdb / conversation-search.db，不写盘、不联网。shell=true 仅用于降级：当前运行时没有可用 node:sqlite 时（如 Electron 37 / Node 22 的扩展宿主），用 process.execPath（ELECTRON_RUN_AS_NODE=1）或 PATH 里的 node 拉起本插件自带的 runner.js，参数表在 index.js 的 callInChild 中硬编码，只有 --experimental-sqlite 一个附加参数，不拼接任何用户输入，也没有 shell 解析（spawn shell:false）。env=true 是因为降级启动子进程时需要把 PATH / HOME / USERPROFILE / APPDATA / TEMP 等最小集合传给子进程，不读取也不外传其它环境变量。verify 的「工具全只读但含 shell」警告属预期，理由如上。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "dev-2",
+        "sig": "nf9054XOe9kquQDg8naNBhhQgghIW5hZY6T0knwldOlky/xn24/qO6jT+72XOZV3jYDLLt63EfxLto8Cm2x1BA=="
       }
     }
   ]

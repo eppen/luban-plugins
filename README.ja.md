@@ -38,6 +38,8 @@ skills/<name>/
 | name | version | ツール | レジストリエントリ |
 |---|---|---|---|
 | [demo](plugins/demo) | 0.1.0 | `now`、`disk_free` | `demo`、`cc-safety-net` |
+| [claude-sessions](plugins/claude-sessions) | 0.1.0 | `list`、`read` | `claude-sessions` |
+| [cursor-sessions](plugins/cursor-sessions) | 0.1.0 | `list`、`read`、`search` | `cursor-sessions` |
 
 ## 既存のスキル
 
