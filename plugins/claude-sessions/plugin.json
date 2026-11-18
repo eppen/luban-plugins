@@ -1,0 +1,67 @@
+{
+  "name": "claude-sessions",
+  "version": "0.1.0",
+  "description": "回看 Claude Code 的会话记录（解析 ~/.claude/projects/ 下的 jsonl，只读）",
+  "main": "index.js",
+  "permissions": {
+    "fsRead": true,
+    "fsWrite": false,
+    "shell": false,
+    "net": false,
+    "env": false
+  },
+  "tools": [
+    {
+      "name": "list",
+      "description": "列出本机所有 Claude Code 会话（按项目分组，含 sessionId、时间、大小、首条用户消息摘要）。先用它找到目标会话，再用 read 读取正文。",
+      "readOnly": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string",
+            "description": "可选。按项目目录名过滤（子串匹配，如 luban）。不传则列出全部项目。"
+          },
+          "limit": {
+            "type": "number",
+            "description": "可选。每个项目最多列出多少个会话，默认 20，按修改时间倒序。"
+          }
+        }
+      }
+    },
+    {
+      "name": "read",
+      "description": "读取单个 Claude Code 会话，解析成可读的用户/助手对话。支持分页（会话可能很长）。",
+      "readOnly": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "会话 ID（jsonl 文件名去掉 .jsonl）。与 path 二选一。"
+          },
+          "path": {
+            "type": "string",
+            "description": "会话 jsonl 文件的绝对路径。与 sessionId 二选一。"
+          },
+          "offset": {
+            "type": "number",
+            "description": "可选。从第几条消息开始返回（0 起），默认 0。"
+          },
+          "limit": {
+            "type": "number",
+            "description": "可选。最多返回多少条消息，默认 40。"
+          },
+          "showThinking": {
+            "type": "boolean",
+            "description": "可选。是否显示助手的 thinking 段，默认 false。"
+          },
+          "showToolUse": {
+            "type": "boolean",
+            "description": "可选。是否显示助手的工具调用，默认 false。"
+          }
+        }
+      }
+    }
+  ]
+}
