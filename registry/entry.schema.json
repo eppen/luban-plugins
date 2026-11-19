@@ -82,6 +82,42 @@
         }
       }
     },
+    "config": {
+      "type": "object",
+      "description": "插件配置表单声明（契约见 docs/plugin-config.md 2.2）。宿主据此在「⚙→常规→本地插件」渲染表单，值存 ~/.luban/<name>.json；不进权限声明",
+      "additionalProperties": false,
+      "required": ["label", "properties"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1, "maxLength": 60, "description": "表单分组标题，如「MES 连接」" },
+        "properties": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "每个配置项。键名 ^[a-zA-Z][a-zA-Z0-9_]{0,31}$，键名即配置文件里的键",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "label"],
+            "properties": {
+              "type": { "enum": ["string", "number", "integer", "boolean"] },
+              "label": { "type": "string", "minLength": 1, "maxLength": 40 },
+              "description": { "type": "string" },
+              "placeholder": { "type": "string" },
+              "default": {},
+              "secret": { "type": "boolean", "description": "true = 密文输入（type 必须 string，且不得带 default）" },
+              "pattern": { "type": "string", "description": "仅 type=string" },
+              "min": { "type": "number" },
+              "max": { "type": "number" },
+              "enum": { "type": "array", "minItems": 1, "items": {} }
+            }
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "提交时必须非空的键，元素必须存在于 properties"
+        }
+      }
+    },
     "permissions": {
       "type": "object",
       "description": "L1 核心：作者自报的实际能力。readOnly 只是工具语义，不能推翻这里；审核以本块为准",

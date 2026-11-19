@@ -98,7 +98,11 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
    - `handler` 抛错会以「插件工具 `pl__…` 失败：<原因>」回给模型。
 3. 写 `README.md`：做什么、**实际权限**（`fsRead` / `fsWrite` / `shell` / `net` / `env`）、
    任何「声明只读但会起子进程 / 联网」的例外。
-4. 自测：把目录拷进 `~/.luban/plugins/`，打开开关，手工调一次 `pl__<name>__<tool>`。
+4. 需要用户填值的插件（地址 / token / 超时）在 `plugin.json` 里声明可选 `config`
+   （`label` + `properties` + `required`，只收标量子集），宿主据此在设置页渲染表单、
+   写回 `~/.luban/<name>.json`；契约、CI 校验与首个示例见
+   [docs/plugin-config.md](docs/plugin-config.md)。
+5. 自测：把目录拷进 `~/.luban/plugins/`，打开开关，手工调一次 `pl__<name>__<tool>`。
 
 字段契约的权威定义在 Luban 主仓的 [docs/tools.md](https://github.com/eppen/luban/blob/main/docs/tools.md)。
 

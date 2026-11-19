@@ -16,6 +16,9 @@ const NAME = /^[a-z0-9][a-z0-9-]{1,39}$/;
 const TOOLNAME = /^[a-z][a-z0-9_]{0,39}$/;
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const PERMS = ['fsRead', 'fsWrite', 'shell', 'net', 'env'];
+// config 表单契约（docs/plugin-config.md 2.2）—— 声明必须早于插件循环（TDZ）
+const CFG_TYPES = new Set(['string', 'number', 'integer', 'boolean']);
+const CFG_KEY = /^[a-zA-Z][a-zA-Z0-9_]{0,31}$/;
 
 // 主题 token 白名单 —— 必须与 Luban 主仓 plugin.js 的 THEME_COLOR_TOKENS / THEME_SIZE_TOKENS
 // 逐字一致：那边才是「装到用户机器上真正生效的闸门」，这里只是提前在 CI 拦住写错的 token。
@@ -181,6 +184,68 @@ for (const dirName of names) {
   } else {
     warn(`${tag} plugin.json 没有 permissions 字段（索引里必须有；README 要按实际行为写清）`);
   }
+
+  // config：插件配置表单声明（契约见 docs/plugin-config.md 2.2）。纯静态校验，不执行任何插件代码。
+  if (m.config !== undefined) validateConfig(m.config, tag);
+}
+
+// 校验 plugin.json 的 config 字段（docs/plugin-config.md 2.2 全部约束）。
+function validateConfig(cfg, tag) {
+  if (!cfg || typeof cfg !== 'object' || Array.isArray(cfg)) { err(`${tag} config 必须是对象`); return; }
+  const t = `${tag}.config`;
+  if (typeof cfg.label !== 'string' || !cfg.label.length) err(`${t} 缺 label（表单分组标题）`);
+  if (!cfg.properties || typeof cfg.properties !== 'object' || Array.isArray(cfg.properties) || !Object.keys(cfg.properties).length) {
+    err(`${t} properties 必须是非空对象`);
+    return;
+  }
+  const props = cfg.properties;
+  for (const [key, spec] of Object.entries(props)) {
+    const s = `${t}.properties.${key}`;
+    if (!CFG_KEY.test(key)) err(`${s} 键名不合规（^[a-zA-Z][a-zA-Z0-9_]{0,31}$）`);
+    if (!spec || typeof spec !== 'object' || Array.isArray(spec)) { err(`${s} 必须是对象`); continue; }
+    const type = spec.type;
+    if (!CFG_TYPES.has(type)) { err(`${s} type 必须是 ${[...CFG_TYPES].join(' / ')}，实际：${JSON.stringify(type)}`); continue; }
+    if (typeof spec.label !== 'string' || !spec.label.length) err(`${s} 缺 label`);
+    else if ([...spec.label].length > 40) err(`${s} label 超长（>40 字符）`);
+    if (spec.description !== undefined && typeof spec.description !== 'string') err(`${s} description 必须是字符串`);
+    if (spec.placeholder !== undefined && typeof spec.placeholder !== 'string') err(`${s} placeholder 必须是字符串`);
+    if (spec.secret !== undefined) {
+      if (typeof spec.secret !== 'boolean') err(`${s} secret 必须是布尔`);
+      else if (spec.secret && type !== 'string') err(`${s} secret 只允许 type=string`);
+      if (spec.secret && spec.default !== undefined) err(`${s} secret 不得带 default（密钥不入库）`);
+    }
+    if (spec.pattern !== undefined) {
+      if (type !== 'string') err(`${s} pattern 只对 type=string 生效`);
+      else { try { new RegExp(spec.pattern); } catch { err(`${s} pattern 不是合法正则`); } }
+    }
+    if (spec.min !== undefined || spec.max !== undefined) {
+      if (type !== 'number' && type !== 'integer') err(`${s} min/max 只对 type=number/integer 生效`);
+      for (const bound of ['min', 'max']) if (spec[bound] !== undefined && typeof spec[bound] !== 'number') err(`${s} ${bound} 必须是数字`);
+      if (typeof spec.min === 'number' && typeof spec.max === 'number' && spec.min > spec.max) err(`${s} min > max`);
+    }
+    if (spec.enum !== undefined) {
+      if (!Array.isArray(spec.enum) || !spec.enum.length) err(`${s} enum 必须是非空数组`);
+      else for (const v of spec.enum) if (!matchesType(v, type, spec)) err(`${s} enum 值 ${JSON.stringify(v)} 不符合 type=${type}`);
+    }
+    if (spec.default !== undefined && !matchesType(spec.default, type, spec)) err(`${s} default ${JSON.stringify(spec.default)} 不符合 type=${type} 或 pattern`);
+  }
+  if (cfg.required !== undefined) {
+    if (!Array.isArray(cfg.required)) err(`${t} required 必须是数组`);
+    else for (const k of cfg.required) {
+      if (typeof k !== 'string' || !Object.hasOwn(props, k)) err(`${t} required 元素 ${JSON.stringify(k)} 不在 properties 里`);
+    }
+  }
+  for (const k of Object.keys(cfg)) if (!['label', 'properties', 'required'].includes(k)) err(`${t} 未知顶层键 ${k}（只认 label / properties / required）`);
+}
+
+function matchesType(v, type, spec) {
+  const ok = (type === 'string' && typeof v === 'string')
+    || (type === 'boolean' && typeof v === 'boolean')
+    || (type === 'integer' && typeof v === 'number' && Number.isInteger(v))
+    || (type === 'number' && typeof v === 'number' && Number.isFinite(v));
+  if (!ok) return false;
+  if (type === 'string' && spec.pattern) { try { if (!new RegExp(spec.pattern).test(v)) return false; } catch { /* 正则错已单独报 */ } }
+  return true;
 }
 
 // 技能：纯 Markdown 说明书，契约只有 SKILL.md 的 frontmatter（name 必需、version 可选）。
