@@ -1,6 +1,6 @@
 {
   "name": "mes-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
   "main": "index.js",
   "permissions": {
