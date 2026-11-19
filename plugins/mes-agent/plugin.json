@@ -1,0 +1,82 @@
+{
+  "name": "mes-agent",
+  "version": "0.1.0",
+  "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
+  "main": "index.js",
+  "permissions": {
+    "fsRead": true,
+    "fsWrite": false,
+    "shell": false,
+    "net": true,
+    "env": true
+  },
+  "config": {
+    "label": "MES 连接",
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "label": "MES 地址",
+        "description": "MES 部署地址（含 context-path）",
+        "placeholder": "http://localhost:8080/mes-web",
+        "pattern": "^https?://"
+      },
+      "token": {
+        "type": "string",
+        "label": "访问令牌",
+        "description": "手动登录 MES 后获取（/sys/login 的 token），12 小时过期",
+        "secret": true
+      },
+      "agentCode": {
+        "type": "string",
+        "label": "智能体编码",
+        "default": "mes_default"
+      },
+      "chatPath": {
+        "type": "string",
+        "label": "对话接口路径",
+        "description": "缺省 /ai/agent/chat；旧版 jar 可设 /agent/chat",
+        "default": "/ai/agent/chat"
+      },
+      "loginUrl": {
+        "type": "string",
+        "label": "登录页地址",
+        "description": "缺省取 MES 地址",
+        "placeholder": "留空则用 MES 地址"
+      },
+      "timeoutMs": {
+        "type": "integer",
+        "label": "超时（毫秒）",
+        "default": 120000,
+        "min": 1000,
+        "max": 600000
+      }
+    },
+    "required": ["baseUrl"]
+  },
+  "tools": [
+    {
+      "name": "chat",
+      "description": "向 MES（制造执行系统）智能体提问并获取回答。MES 智能体可查询生产/能源/物料数据，返回自然语言回答 + 结构化表格/图表（渲染为文本）。支持多轮对话：把上一轮返回的 sessionId 传回即可续接。",
+      "readOnly": false,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "要问 MES 智能体的问题（用用户的语言）"
+          },
+          "agentCode": {
+            "type": "string",
+            "description": "可选：MES 智能体编码，缺省用配置里的 MES_AGENT_CODE（默认 mes_default）"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "可选：上一轮返回的 sessionId，用于多轮对话续接"
+          }
+        },
+        "required": ["message"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1217,6 +1217,75 @@
         "keyId": "dev-2",
         "sig": "nf9054XOe9kquQDg8naNBhhQgghIW5hZY6T0knwldOlky/xn24/qO6jT+72XOZV3jYDLLt63EfxLto8Cm2x1BA=="
       }
+    },
+    {
+      "name": "mes-agent",
+      "displayName": "MES 智能体问答",
+      "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
+      "type": "plugin",
+      "version": "0.1.0",
+      "author": "dllhl",
+      "license": "MIT",
+      "repo": "https://github.com/eppen/luban-plugins",
+      "tags": [
+        "mes",
+        "agent",
+        "ai"
+      ],
+      "install": {
+        "type": "git",
+        "url": "git@github.com:eppen/luban-plugins.git",
+        "subdir": "plugins/mes-agent",
+        "target": "global"
+      },
+      "sourceSha256": "f8c2ca2f2d83898d2d6e327f1d65124988e8d36db428ae75af9c130a3afb1101",
+      "ctxApi": ">=0.1 <1.0",
+      "tools": [
+        {
+          "name": "chat",
+          "description": "向 MES（制造执行系统）智能体提问并获取回答。MES 智能体可查询生产/能源/物料数据，返回自然语言回答 + 结构化表格/图表（渲染为文本）。支持多轮对话：把上一轮返回的 sessionId 传回即可续接。",
+          "readOnly": false,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "要问 MES 智能体的问题（用用户的语言）"
+              },
+              "agentCode": {
+                "type": "string",
+                "description": "可选：MES 智能体编码，缺省用配置里的 MES_AGENT_CODE（默认 mes_default）"
+              },
+              "sessionId": {
+                "type": "string",
+                "description": "可选：上一轮返回的 sessionId，用于多轮对话续接"
+              }
+            },
+            "required": [
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ],
+      "permissions": {
+        "fsRead": true,
+        "fsWrite": false,
+        "shell": false,
+        "net": true,
+        "env": true
+      },
+      "review": {
+        "status": "reviewed",
+        "reviewedBy": "dllhl",
+        "reviewedAt": "2026-11-19T04:00:00Z",
+        "notes": "chat 工具声明非只读（向 MES 服务端发起真实请求，服务端智能体内部行为插件无法保证）。permissions 与实现一致：net=true 每次调用 fetch 到用户配置的 baseUrl；fsRead=true 每次调用读 ~/.luban/mes-agent.json（不存在则忽略）；env=true 读 MES_* 环境变量（优先于配置文件）；fsWrite/shell 均为 false，不写文件、不起子进程。零依赖，只用 node:fs/os/path + 全局 fetch（Node >= 18）。"
+      },
+      "signature": {
+        "algo": "ed25519",
+        "keyId": "dev-2",
+        "sig": "L18u7XM6ZE+ZX8WJpbLP7d5/4VG+TsoRQWLj02zRPf9T04IAbWdb5TgdWgzVwRifB3Hs1d2/iZiENlBsbvTtBA=="
+      }
     }
   ]
 }
