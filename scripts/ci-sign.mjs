@@ -53,6 +53,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const DEFAULT_REGISTRY_PATH = path.join(ROOT, 'registry', 'registry.json');
 
+// CI 里日志要登录才看得到，所以致命错误一律走 `::error::` 写进 job 注解，
+// 否则页面上只剩一句「Process completed with exit code 1」，等于没有信息。
+function fatal(msg) {
+  console.error(`::error::${msg}`);
+  console.error(msg);
+  process.exit(1);
+}
+
+// 任何未捕获的异常也要变成注解，否则 CI 页面只剩 exit code
+process.on('uncaughtException', (e) => fatal(`未预期的错误：${e && e.message ? e.message : String(e)}`));
+process.on('unhandledRejection', (e) => fatal(`未预期的错误：${e && e.message ? e.message : String(e)}`));
+
 // ---------- 参数 ----------
 const args = process.argv.slice(2);
 let keyPath = null;
@@ -68,28 +80,56 @@ for (let i = 0; i < args.length; i++) {
   if (args[i] === '--moved-tags') movedTagsFile = args[i + 1];
 }
 if (!keyPath) {
-  console.error('用法：node scripts/ci-sign.mjs --key <私钥路径> [--registry <registry.json>] [--check] [--no-sync-tags] [--moved-tags <文件>]');
-  process.exit(1);
+  fatal('用法：node scripts/ci-sign.mjs --key <私钥路径> [--registry <registry.json>] [--check] [--no-sync-tags] [--moved-tags <文件>]');
 }
 keyPath = keyPath.replace(/^~(?=$|\/|\\)/, os.homedir());
 
 // ---------- 读私钥（JSON：{ keyId, privateKey(base64 DER pkcs8), publicKey }）----------
-let priv;
+// 也接受「base64 包了一层的同一份 JSON」：GitHub secret 里多套一层很常见，
+// 而报错现场只有一句 exit code 1，这种低级失误排查成本极高，不如直接两种都认。
+function loadKey(file) {
+  let raw;
+  try {
+    raw = fs.readFileSync(file, 'utf8').trim();
+  } catch (e) {
+    fatal(`读不到私钥 ${file}：${e.message}`);
+  }
+  if (!raw) fatal(`私钥文件是空的：${file}`);
+  const shape = `长度 ${raw.length}，开头 ${JSON.stringify(raw.slice(0, 12))}，结尾 ${JSON.stringify(raw.slice(-8))}`;
+  const attempts = [['原文', raw]];
+  if (!raw.startsWith('{')) attempts.push(['base64', Buffer.from(raw, 'base64').toString('utf8')]);
+  const errs = [];
+  for (const [how, text] of attempts) {
+    try {
+      const obj = JSON.parse(text);
+      if (obj && obj.keyId && obj.privateKey) {
+        if (how !== '原文') console.log(`  NOTE 私钥按「${how} 解码后的 JSON」读入`);
+        return obj;
+      }
+      errs.push(`${how}: JSON 能解析但缺 keyId / privateKey（现有字段：${Object.keys(obj || {}).join(',') || '无'}）`);
+    } catch (e) {
+      errs.push(`${how}: ${e.message}`);
+    }
+  }
+  fatal(`私钥文件不可用（${file}，${shape}）。应为 {"keyId":…,"privateKey":…} 的 JSON 原文或其 base64。\n  ${errs.join('\n  ')}`);
+}
+
+const priv = loadKey(keyPath);
+let key;
 try {
-  priv = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+  key = createPrivateKey({ key: Buffer.from(priv.privateKey, 'base64'), format: 'der', type: 'pkcs8' });
 } catch (e) {
-  console.error(`读不到私钥 ${keyPath}：${e.message}`);
-  process.exit(1);
+  fatal(`私钥 keyId=${priv.keyId} 的 privateKey 不是合法的 base64/DER/PKCS8：${e.message}`);
 }
-if (!priv.privateKey || !priv.keyId) {
-  console.error(`私钥文件格式不对：${keyPath}（需要 { keyId, privateKey, publicKey }）`);
-  process.exit(1);
-}
-const key = createPrivateKey({ key: Buffer.from(priv.privateKey, 'base64'), format: 'der', type: 'pkcs8' });
 
 // ---------- 读 registry ----------
 const REGISTRY_PATH = registryPath || DEFAULT_REGISTRY_PATH;
-const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+let registry;
+try {
+  registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+} catch (e) {
+  fatal(`读不到 / 解析不了索引 ${REGISTRY_PATH}：${e.message}`);
+}
 const entries = registry.entries || [];
 const byName = new Map(entries.map((e) => [e.name, e]));
 
