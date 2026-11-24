@@ -1,8 +1,22 @@
 // Luban 本地插件示例。ctx 只给 root / sessionId / mode / signal / log（故意不给 execTool）。
 const { execFile } = require('child_process');
 const os = require('os');
+const path = require('path');
 
 function freeBytes(dir) {
+  if (process.platform === 'win32') {
+    // Windows: 用 PowerShell 取目标盘符的剩余字节（Get-PSDrive 输出 Free 单位是字节）
+    const drive = path.parse(path.resolve(dir)).root.replace(/\\$/, '');
+    const script = "(Get-PSDrive -Name '" + drive.charAt(0) + "').Free";
+    return new Promise(function (resolve, reject) {
+      execFile('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script],
+        { timeout: 5000 }, function (err, stdout) {
+          if (err) return reject(err);
+          const n = Number(String(stdout).trim());
+          resolve(Number.isFinite(n) ? n : null);
+        });
+    });
+  }
   return new Promise(function (resolve, reject) {
     execFile('df', ['-k', dir], { timeout: 5000 }, function (err, stdout) {
       if (err) return reject(err);

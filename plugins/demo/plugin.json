@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
   "tools": [
     {

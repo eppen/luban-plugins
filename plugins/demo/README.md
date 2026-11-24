@@ -13,8 +13,10 @@ Luban 本地插件的最小示例：两个只读工具。
 { "fsRead": false, "fsWrite": false, "shell": true, "net": false, "env": false }
 ```
 
-`disk_free` 的实现是 `execFile('df', ['-k', dir])`：声明为只读，但**确实会起一个子进程**。
-`df` 只读磁盘统计（不写盘、不联网），所以 `shell: true` 如实声明，
+`disk_free` 的实现按平台分流：POSIX 用 `execFile('df', ['-k', dir])`，Windows 用
+`execFile('powershell.exe', ['-Command', "(Get-PSDrive -Name 'X').Free"])`。
+声明为只读，但**确实会起一个子进程**。
+`df` / `Get-PSDrive` 只读磁盘统计（不写盘、不联网），所以 `shell: true` 如实声明，
 索引里的 `review.notes` 记录了这项人工核对结论。这也是本仓为什么要求「权限声明按
 实现的实际行为写，而不是按工具语义写」。
 
