@@ -1,7 +1,7 @@
 {
   "name": "demo",
-  "version": "0.2.0",
-  "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
+  "version": "0.3.0",
+  "description": "Luban 本地插件示例：本机时间与各磁盘剩余空间",
   "tools": [
     {
       "name": "now",
@@ -11,7 +11,7 @@
     },
     {
       "name": "disk_free",
-      "description": "返回工作区所在磁盘的剩余空间",
+      "description": "列出本机所有磁盘的剩余/已用空间（标注工作区所在盘）",
       "readOnly": true,
       "parameters": { "type": "object", "properties": {} }
     }

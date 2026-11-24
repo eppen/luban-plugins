@@ -2,12 +2,12 @@
 
 Luban 本地插件的最小示例：两个只读工具。
 
-> 当前版本 **0.2.0**：`disk_free` 增加 Windows 支持（POSIX 行为不变）。
+> 当前版本 **0.3.0**：`disk_free` 改为列出所有磁盘（Windows 各盘符 / POSIX 各挂载点），并标注工作区所在盘。
 
 | 工具 | 做什么 | readOnly |
 |---|---|---|
 | `now` | 返回本机当前时间（ISO 8601 + 时区） | 是 |
-| `disk_free` | 返回工作区所在磁盘的剩余空间 | 是 |
+| `disk_free` | 列出所有磁盘的剩余/已用空间（标注工作区所在盘） | 是 |
 
 ## 权限声明（与索引条目一致）
 
@@ -15,8 +15,10 @@ Luban 本地插件的最小示例：两个只读工具。
 { "fsRead": false, "fsWrite": false, "shell": true, "net": false, "env": false }
 ```
 
-`disk_free` 的实现按平台分流：POSIX 用 `execFile('df', ['-k', dir])`，Windows 用
-`execFile('powershell.exe', ['-Command', "(Get-PSDrive -Name 'X').Free"])`。
+`disk_free` 的实现按平台分流：POSIX 用 `execFile('df', ['-k'])` 列出所有挂载点
+（只保留 `/dev/` 开头或网络挂载），Windows 用
+`execFile('powershell.exe', ['-Command', 'Get-PSDrive -PSProvider FileSystem ...'])`
+列出所有盘符，并标注工作区所在盘。
 声明为只读，但**确实会起一个子进程**。
 `df` / `Get-PSDrive` 只读磁盘统计（不写盘、不联网），所以 `shell: true` 如实声明，
 索引里的 `review.notes` 记录了这项人工核对结论。这也是本仓为什么要求「权限声明按
