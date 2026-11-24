@@ -165,21 +165,23 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 
 ## 发布到索引
 
-索引（含签名与审核状态）在 Luban 主仓：`registry/registry.json`，schema 见
-`registry/entry.schema.json`。流程：
+索引（含签名与审核状态）就在**本仓** `registry/registry.json` —— 市场与 `luban plugin add`
+读的是这一份。主仓 `luban/registry/` 另有一份随安装包内置的副本，版本会落后，不用手工同步。
+schema 见 `registry/entry.schema.json`。流程：
 
-1. 本仓打 tag：`<name>-v<version>`，例如 `demo-v0.1.0`；
-2. 在主仓的 `registry/registry.json` 加/更新条目：
+1. 改包、升 `version`。tag `<name>-v<version>` 由 CI 自动对齐到同一份内容，不必手工打；
+2. 在本仓 `registry/registry.json` 加/更新条目：
    - `install`: `{ "type": "git", "url": "https://github.com/eppen/luban-plugins.git", "subdir": "plugins/<name>", "target": "global" }`
      （技能把 `subdir` 换成 `skills/<name>`，并把 `type` 设为 `"skill"`、`tools` 为 `[]`、`permissions` 为 `{}`）
    - `sourceSha256`: 插件目录的确定性哈希 —— 目录下文件按相对路径的 UTF-8 字节序升序，
      逐个写入 `<相对路径>\0<文件 sha256 hex>\n`，再对整体取 sha256
-     （`node scripts/registry-tool.mjs hash <dir>` 可复算）；
+     （在 Luban 主仓跑 `node scripts/registry-tool.mjs hash <dir>` 可复算）；
    - `permissions`: 按第 3 条的实际行为填；
    - `review.status`: 先 `pending`，人工核对实现后由审核人改 `reviewed`；
-3. 条目内容一改（含权限、工具清单、install）就必须重新签名：
-   `node scripts/registry-tool.mjs sign <name> --key <私钥>`；私钥不入任何仓库；
-4. `node scripts/registry-tool.mjs verify` 通过后提 PR。
+3. 条目内容一改（含权限、工具清单、install）**不要本地签名**：合并到 `main` 后
+   `.github/workflows/registry-sign.yml` 会用 `registry-ci` 私钥自动同步内容、重签、
+   并把 tag 对齐到同一份内容。私钥只在 CI 的 secret 里，谁也不经手；
+4. 提 PR，等 CI 的清单校验 + 「索引是否已同步」检查通过后合并。
 
 ## CI 检查什么
 
@@ -195,7 +197,8 @@ Luban 里要打开 `luban.plugins.enabled`（侧边栏「⚙ → 常规 → 本�
 
 目录哈希、`sourceSha256`、以及「索引条目 == 用户装到的那份」由主仓
 `node scripts/registry-tool.mjs verify --remote` 把关（按 `install` 字段真拉包比对）。
-本仓刻意不重复实现哈希算法 —— 同一套算法两处各写一版，早晚会漂移。
+本仓的 `scripts/ci-sign.mjs` 同步索引时也会复算同一个哈希（算法见 `registry/README.md`）；
+两处实现必须一起改 —— 只改一边就会重新出现「索引与实际不符、装不上」。
 
 ## 版本与兼容
 

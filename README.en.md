@@ -127,25 +127,29 @@ The authoritative definition of the field contract lives in the Luban main repo'
 
 ## Publishing to the registry
 
-The registry (including signatures and review status) lives in the Luban main repo:
-`registry/registry.json`, with the schema in `registry/entry.schema.json`. The flow:
+The registry (including signatures and review status) lives in **this repo**:
+`registry/registry.json` — this is what the marketplace and `luban plugin add` read.
+The Luban main repo carries a bundled snapshot at `luban/registry/` that lags behind and is
+not synced by hand. Schema: `registry/entry.schema.json`. The flow:
 
-1. Tag this repo: `<name>-v<version>`, e.g. `demo-v0.1.0`;
-2. Add / update the entry in the main repo's `registry/registry.json`:
+1. Change the package and bump `version`. The `<name>-v<version>` tag is realigned by CI to
+   point at that same content — no manual tagging needed;
+2. Add / update the entry in this repo's `registry/registry.json`:
    - `install`: `{ "type": "git", "url": "https://github.com/eppen/luban-plugins.git", "subdir": "plugins/<name>", "target": "global" }`
      (for a skill, change `subdir` to `skills/<name>`, set `type` to `"skill"`, `tools` to `[]`,
      and `permissions` to `{}`)
    - `sourceSha256`: a deterministic hash of the plugin directory — files are ordered by the
      UTF-8 byte order of their relative paths, and `<relative path>\0<file sha256 hex>\n` is
      written for each one before hashing the whole thing
-     (`node scripts/registry-tool.mjs hash <dir>` recomputes it);
+     (`node scripts/registry-tool.mjs hash <dir>` in the Luban main repo recomputes it);
    - `permissions`: fill in per the actual behavior from step 3 above;
    - `review.status`: starts as `pending`; a reviewer flips it to `reviewed` after checking
      the implementation;
-3. Any change to an entry (permissions, tool list, `install`) requires re-signing:
-   `node scripts/registry-tool.mjs sign <name> --key <private key>`; the private key never
-   enters any repository;
-4. Once `node scripts/registry-tool.mjs verify` passes, open a PR.
+3. Any change to an entry (permissions, tool list, `install`) is re-signed **by CI, not locally**:
+   after merge into `main`, `.github/workflows/registry-sign.yml` syncs the content, re-signs
+   with the `registry-ci` key, and realigns the tag to match. The private key only lives in a CI
+   secret and never enters any repository;
+4. Open a PR and merge once the CI manifest check and the "registry is in sync" check pass.
 
 ## What CI checks
 
@@ -165,9 +169,10 @@ code** (CI never executes third-party code):
 
 The directory hash, `sourceSha256`, and "the registry entry == what the user actually
 installed" are enforced by the main repo's `node scripts/registry-tool.mjs verify --remote`
-(it really pulls the package per the `install` field and compares). This repo deliberately
-does not re-implement the hash algorithm — the same algorithm written twice in two places
-will drift eventually.
+(it really pulls the package per the `install` field and compares). This repo's
+`scripts/ci-sign.mjs` recomputes the same hash when syncing the index (algorithm documented in
+`registry/README.md`); the two implementations must be changed together — updating only one
+brings back the "entry does not match the package" install failure.
 
 ## Versioning and compatibility
 

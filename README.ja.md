@@ -130,25 +130,29 @@ Luban で `luban.plugins.enabled` をオンにしてください（サイドバ�
 
 ## レジストリへの公開
 
-レジストリ（署名とレビュー状態を含む）は Luban 本体リポジトリにあります:
-`registry/registry.json`、スキーマは `registry/entry.schema.json`。手順:
+レジストリ（署名とレビュー状態を含む）は **本リポジトリ** にあります:
+`registry/registry.json` — マーケットプレイスと `luban plugin add` が読むのはこちらです。
+Luban 本体リポジトリの `luban/registry/` にはインストーラに同梱される控えがあり、版が遅れます
+（手作業では同期しません）。スキーマは `registry/entry.schema.json`。手順:
 
-1. 本リポジトリに tag を打ちます: `<name>-v<version>`、例: `demo-v0.1.0`;
-2. 本体リポジトリの `registry/registry.json` にエントリを追加 / 更新します:
+1. パッケージを変更して `version` を上げます。tag `<name>-v<version>` は CI が同じ内容を
+   指すように揃えるため、手動で打つ必要はありません;
+2. 本リポジトリの `registry/registry.json` にエントリを追加 / 更新します:
    - `install`: `{ "type": "git", "url": "https://github.com/eppen/luban-plugins.git", "subdir": "plugins/<name>", "target": "global" }`
      （スキルの場合は `subdir` を `skills/<name>` に変え、`type` を `"skill"`、`tools` を `[]`、
      `permissions` を `{}` にします）
    - `sourceSha256`: プラグインディレクトリの決定論的ハッシュ — ディレクトリ内のファイルを
      相対パスの UTF-8 バイト順で昇順に並べ、`<相対パス>\0<ファイルの sha256 hex>\n` を順に
      書き出したもの全体の sha256 を取ります
-     （`node scripts/registry-tool.mjs hash <dir>` で再計算できます）;
+     （Luban 本体リポジトリで `node scripts/registry-tool.mjs hash <dir>` を実行すると再計算できます）;
    - `permissions`: 上記手順 3 の実際の挙動に従って記入します;
    - `review.status`: まず `pending` とし、実装を人間が確認した後にレビュアーが `reviewed` に
      変更します;
-3. エントリの内容を 1 か所でも変えたら（権限・ツール一覧・`install` を含む）再署名が必要です:
-   `node scripts/registry-tool.mjs sign <name> --key <秘密鍵>`。秘密鍵はどのリポジトリにも
-   置きません;
-4. `node scripts/registry-tool.mjs verify` が通ったら PR を出します。
+3. エントリの内容を 1 か所でも変えたら（権限・ツール一覧・`install` を含む）、再署名は
+   **CI が行います（ローカルで署名しないでください）**: `main` へマージ後、
+   `.github/workflows/registry-sign.yml` が内容を同期し、`registry-ci` 鍵で再署名し、
+   tag を同じ内容に揃えます。秘密鍵は CI の secret にのみ存在し、リポジトリには入りません;
+4. PR を出し、CI のマニフェスト検査と「レジストリが同期済みか」の検査が通ったらマージします。
 
 ## CI のチェック内容
 
@@ -170,8 +174,10 @@ Luban で `luban.plugins.enabled` をオンにしてください（サイドバ�
 ディレクトリハッシュ、`sourceSha256`、そして「レジストリエントリ == ユーザーが実際に
 インストールしたもの」の一致は、本体リポジトリの
 `node scripts/registry-tool.mjs verify --remote` が保証します（`install` フィールドに従って
-実際にパッケージを取得して比較します）。本リポジトリはあえてハッシュアルゴリズムを
-再実装しません — 同じアルゴリズムを 2 か所で別々に書くと、いずれズレが生じるためです。
+実際にパッケージを取得して比較します）。本リポジトリの `scripts/ci-sign.mjs` も
+インデックス同期時に同じハッシュを再計算します（アルゴリズムは `registry/README.md`）。
+2 つの実装は必ず同時に直してください — 片方だけ直すと「エントリとパッケージが一致しない」
+インストール失敗が再発します。
 
 ## バージョンと互換性
 

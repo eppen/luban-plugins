@@ -160,8 +160,9 @@
 | `plugins/mes-agent/README.md` | 配置一节补「也可在设置页表单配置」 | ✅ 已实现 |
 | `README.md` | 「新增一个插件」补 `config` 一句 + 链接到本文档 | ✅ 已实现 |
 
-> 注：`registry/registry.json` 里 mes-agent 条目的 `sourceSha256` / `signature` 需随
-> `plugin.json` 变更由维护者重算重签（本机无私钥，`scripts/sign-all.mjs` 无法代签）。
+> 注：`registry/registry.json` 里 mes-agent 条目的 `sourceSha256` / `signature` 会随
+> `plugin.json` 变更由 CI 自动重算重签（`.github/workflows/registry-sign.yml` → `scripts/ci-sign.mjs`），
+> 不需要本地私钥；`scripts/sign-all.mjs` 已默认拒绝执行，只作离线兜底（`--offline`）。
 
 CI 行为不变：`check-plugins.mjs` 仍**不 require 插件代码**，只读 `plugin.json` 静态校验。
 

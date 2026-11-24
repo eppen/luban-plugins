@@ -7,20 +7,39 @@ registry/
   keys/<keyId>.pub     验签公钥（JSON: {keyId, algo, publicKey(base64 DER SPKI)}）
 ```
 
+## 这个 registry 目录是哪一份
+
+索引有**两份**，内容与用途不同，别搞混：
+
+| 位置 | 谁在用 | demo 版本 |
+|---|---|---|
+| **本仓** `luban-plugins/registry/` | 市场 / `luban plugin add` 实际读取的那份（按 tag 真拉包比对） | 最新 |
+| 主仓 `luban/registry/` | 随编辑器安装包内置的离线副本，自洽可装但版本旧 | 落后 |
+
+所以**发版要动的是本仓**：改包 → 升 version → 合并到 main → CI 自动同步重签。
+主仓那份由主编译流程的 `sync-registry.mjs` 择机拉取，不用手工同步。
+
+下面出现的 `scripts/registry-tool.mjs`（`hash` / `keygen` / `sign` / `verify`）**位于 Luban 主仓**，
+本仓没有这个文件 —— 本仓只有 `scripts/ci-sign.mjs`（CI 同步重签）与 `scripts/check-plugins.mjs`（清单校验）。
+
 ## 用法
 
 ```bash
 # 插件 / 技能源码仓（monorepo）：https://github.com/eppen/luban-plugins
 #   插件结构 plugins/<name>/，技能结构 skills/<name>/，tag 都是 <name>-v<version>
+#
+# 以下 registry-tool.mjs 命令都在 **Luban 主仓** 目录下执行。
 
 # 算 sourceSha256（目录的确定性哈希，任何人 clone 后都能复算出同一个值）
 node scripts/registry-tool.mjs hash ../luban-plugins/plugins/demo
 node scripts/registry-tool.mjs hash ../luban-plugins/skills/changelog-draft
 
 # 生成签名密钥（私钥写到仓库外，勿提交；别放 /tmp，重启会被清掉）
+# —— 只在需要新增 keyId 时才做；已有的 registry-ci / dev-* 无需重新生成
 node scripts/registry-tool.mjs keygen dev-1 --out '~/.luban-keys'
 
-# 修改条目后重新签名（改 permissions/tools/install/sourceSha256 都必须重签）
+# ⚠ 本地手工签名仅用于「离线 / 需要在 CI 外产出一份可验签的索引」。
+#   正常发版不要手签：合并到 main 后本仓的 CI 会自动同步 + 重签（见下方「谁签名」）。
 node scripts/registry-tool.mjs sign demo --key '~/.luban-keys/dev-1.priv.json'
 
 # 校验：字段规范 + 命名空间冲突 + 签名 + 与已装包一致性
@@ -120,44 +139,57 @@ node scripts/registry-tool.mjs hash /tmp/lp/plugins/demo
 | 工具全 readOnly 但 `shell/net/fsWrite` 为真 | warn | **需人工核对实现**，签名无法证明行为 |
 | 缺 `sourceSha256` | warn | 安装不可复现 |
 
-## 贡献者 vs 维护者：谁签名
+## 谁签名：CI 自动，不手工
 
-签名是**维护者合并 PR 后补的工序**，不是贡献者的责任。私钥只在维护者手里，从不进仓库。
+签名由 CI 完成，贡献者和维护者都**不需要私钥**：
+
+1. 改包（插件 / 技能）、升 `version`；
+2. 条目里的 `signature` 不要手工写；
+3. 合并到 `main` 后，`.github/workflows/registry-sign.yml` 跑 `scripts/ci-sign.mjs`：
+   - 按包内实际内容同步 `version` / `tools` / `permissions` / `sourceSha256`
+   - 用 `registry-ci` 私钥对**每个条目**重签
+   - 把 `<name>-v<version>` tag 对齐到同一份内容并推送（安装端按 tag 取包）
+   - 提交回写 `registry.json`：`chore(registry): 同步索引并重签 [ci-sign]`
 
 | 角色 | 做什么 | 需要私钥 |
 |---|---|---|
-| 贡献者 | fork luban-plugins → 加插件/技能 → 在本仓 `registry.json` 加条目（**不写 `signature`**）→ 提 PR | ❌ |
-| 维护者 | 审核代码 → 合并 → `sign <name>` 补签名 → 推送 | ✅ |
+| 贡献者 | fork → 加插件/技能 → 提 PR（条目里**不写** `signature`） | ❌ |
+| CI | 合并后同步内容 + 重签 + 对齐 tag | ✅（secret `REGISTRY_SIGNING_KEY`） |
+| 维护者 | 审代码 → 合并 → 确认 CI 绿 | ❌ |
 
-贡献者侧（无私钥）：
+贡献者侧（无私钥，`registry-tool.mjs` 在主仓）：
 
 ```bash
 # 算好 sourceSha256 填进条目，条目里不要有 signature 字段
 node scripts/registry-tool.mjs hash /path/to/their-plugin
-# 提 PR。未签名条目在 verify 里只是 WARN，不阻断 CI
+# 提 PR。PR 上只跑「清单校验 + 索引是否已同步」，不写文件、不碰 tag
 ```
 
-维护者侧（合并后补签）：
+维护者侧：合并后看 workflow 是否 success 即可。**不要在本地补签** ——
+`scripts/sign-all.mjs` 已默认拒绝执行（需显式 `--offline` 才肯签），
+因为本地签完推上去，CI 会再签一遍，只多一个提交并让 keyId 混用。
 
-```bash
-git pull origin main
-node scripts/registry-tool.mjs sign their-plugin --key '~/.luban-keys/dev-2.priv.json'
-git add registry/registry.json
-git commit -m "chore(registry): sign their-plugin"
-git push origin main
-```
+### 签名能证明什么、不能证明什么
 
-未签名条目 `verify` 报 `WARN [xxx] 未签名（L0 可接受，L1 要求签名后才算可信）`，
-退出码只看 `errors.length`，警告不影响 CI 通过。所以「贡献者没私钥」是正常且预期的。
+`registry-ci` 私钥在 GitHub secret 里，而 CI 会对**合并进 `main` 的一切**自动签名。所以：
 
-多人维护时可按发布者分 `keyId`（`keygen maintainer-alice`），每个签名条目的
-`signature.keyId` 指向对应维护者的公钥；吊销某维护者只需从 `signingKeys` 移除其 keyId，
-不用动条目本身。
+- ✅ **能证明**：内容确实走过本仓 CI 流水线，且索引里的 `sourceSha256` / `tools` / `permissions`
+  与包内实际内容一致（防「索引说的和装到的不一样」）。
+- ✅ **能防**：索引在镜像 / CDN / 传输途中被替换，或包在拉取途中被篡改。
+- ❌ **不能证明**：作者可信、代码被人工审过。**能改本仓的人（以及 CI 本身）都能拿到有效签名。**
+  签名不是「防投毒」；真正的防线是审代码 + `permissions` 如实申报 + `review.status`。
+
+如果将来需要区分「作者身份」与「完整性」，得让维护者用自己的 `keyId`（如 `dev-2`）另行签名。
+现在做不到：条目只有单个 `signature` 字段，同一时刻只能挂一把钥匙的有效签名，
+CI 重签会把本地签名覆盖掉。多人维护时若要按发布者分 `keyId`（`keygen maintainer-alice`），
+就得让 CI 停止自动签 —— 那时 CI 只做内容同步，签名交回人工，并承担「贡献者 PR 卡死」的代价。
 
 ## 约定
 
-- 签名对象：去掉 `signature` 后按键名递归排序的紧凑 JSON（见 `scripts/registry-tool.mjs` 的 `canonical()`）。
-- 私钥永不入库；`keys/` 下只放公钥。轮换时新增 `keyId`，旧条目保留旧签名，不追溯重签。
+- 签名对象：去掉 `signature` 后按键名递归排序的紧凑 JSON（`scripts/ci-sign.mjs` 与主仓 `registry-tool.mjs` 的 `canonical()` 必须保持一致）。
+- **私钥永不入库**：`keys/` 下只放 `.pub` 公钥；私钥在 `~/.luban-keys/`（本地）与 GitHub secret `REGISTRY_SIGNING_KEY`（CI）。
+  `.gitignore` 已挡住 `*.priv.json` / `*-key.json` / `ci-key*.json` / `*.pem` 等模式作为兜底，
+  但那是最后一道网、不是许可：`git add -f` 与直接粘贴仍会漏。轮换时新增 `keyId`，旧条目保留旧签名，不追溯重签。
 - `review.status = revoked` 的下架条目保留在索引里（供已安装用户告警），不删除。
 - 改任何内容（`permissions` / `tools` / `install` / `sourceSha256`）都要重签，否则 `verify` 报签名校验失败。
 - `name` 建立索引即冻结：它决定工具前缀 `pl__<name>__`，换名等于换一个新插件。
@@ -177,11 +209,11 @@ git push origin main
   **不需要信任表**：纯 Markdown 不给模型新增执行能力，装完下一轮就被 `skills.js` 扫到。
   已装清单写在 `<skills 根>/.installed.json` 而**不写进技能目录** —— 写进去就成了包内容，
   `sourceSha256` 复算必然不符（与插件回收站元数据写同级 `<条目>.json` 同一个理由）。
-- 当前索引条目由 `registry-ci` 签名：私钥只存在于 GitHub secret `REGISTRY_SIGNING_KEY`，
+- 当前索引全部条目由 `registry-ci` 签名：私钥只存在于 GitHub secret `REGISTRY_SIGNING_KEY`，
   合并到 `main` 后由 `.github/workflows/registry-sign.yml` 自动重签并回写。
   私钥允许是 JSON 原文，也允许是**它的 base64**（secret 里多套一层很常见，`ci-sign.mjs` 两种都认）。
-- 本地密钥 `dev-2`（`~/.luban-keys/dev-2.priv.json`，不入库）仍可用于离线验签、复算与调试；
-  用它在本地 `sign` 后推送，CI 会再把条目改成 `registry-ci` 签名（多一次重签提交）。
-  所以**发布时最好只让 CI 签**，本地签名留给「没有网络 / 需要在 CI 外验证」的场景。
+- 本地密钥 `dev-2`（`~/.luban-keys/dev-2.priv.json`，不入库）**目前没有任何条目在用它**，
+  只在离线场景有意义（`--offline` 兜底签名、复算、调试）。`scripts/sign-all.mjs` 默认拒绝执行，
+  就是防止「本地签一遍 + CI 再签一遍」的多余提交与索引内 keyId 混用。
   早期的 `dev-1` 私钥已丢失，其公钥 `keys/dev-1.pub` 仅作历史保留，不再列入 `signingKeys`。
-  面向公众发布前应重新 `keygen` 一个新 `keyId` 并重签。
+  面向公众发布前若要换根，应重新 `keygen` 一个新 `keyId` 并让 CI 用它签。

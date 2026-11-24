@@ -2,3 +2,18 @@ node_modules/
 .DS_Store
 *.log
 nul
+
+# ---- 私钥绝不入库 ----
+# 本仓只放公钥 registry/keys/*.pub；私钥在 ~/.luban-keys/ 与 GitHub secret 里。
+# 下面这些模式是防误提交的兜底：调试时把私钥落盘到工作区、或从 secret 导出成文件，
+# 一旦 `git add -A` 就会带上 —— 与其靠记性，不如让 git 直接拦住。
+*.priv.json
+*.priv
+*-key.json
+ci-key*.json
+registry-ci*.json
+*.pem
+*.p12
+*.pfx
+id_ed25519
+id_rsa
