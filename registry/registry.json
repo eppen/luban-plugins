@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-18T07:55:22Z",
+  "updatedAt": "2026-11-24T01:51:02Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -20,7 +20,7 @@
       "displayName": "Demo 小工具",
       "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
       "type": "plugin",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": "liuhualiang",
       "license": "MIT",
       "repo": "https://github.com/eppen/luban-plugins",
@@ -34,7 +34,7 @@
         "subdir": "plugins/demo",
         "target": "global"
       },
-      "sourceSha256": "f806fcc5d33aa49dda38b9dc19936d635adef498f0960987a08bd9b1d32c61cb",
+      "sourceSha256": "9d8551ee49e211d630bc3842ac3f51a46897877ca49a152f0c4a9d73b01f94c1",
       "ctxApi": ">=0.1 <1.0",
       "tools": [
         {
@@ -71,8 +71,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "rXVMOvPMaJVt5nLUHz+So/q3kYOMyKVNacH9AXUiyA69mwRzV3++kAO0Wvcw65EVBqfNuML/8f/xGlJtK2NfAg=="
+        "keyId": "dev-2",
+        "sig": "951hCdRGdctPVpV3of3d5RW2crAWQlBt35YLISMXfsRPRwBGrXiIN+3v7yZK3I2N3Aoiuvp7BO33fMLmss2IDw=="
       }
     },
     {
@@ -94,7 +94,7 @@
         "subdir": "skills/changelog-draft",
         "target": "global"
       },
-      "sourceSha256": "807f066342c0c90b9accd011d6f009b5650c1e093eab9765585c1710eaee7a6b",
+      "sourceSha256": "d520a4ba9c2a075ab993d2ca9a3a3cb8f18a2b97661671ba2d89e3c965834585",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -106,8 +106,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "kOGvBF7aNY2qmRyV8FS7UYqIHermnhVecumvVhmPgNgACxLbTLW4pubtccT0hGFlPHAJiK8Q9gHK8k+YaCt7DQ=="
+        "keyId": "dev-2",
+        "sig": "6fWRcCcGgwcX5niU96ea2knPlMuwONZ09pmm0IrObIDWoghdhHdBLu2nfBT6VeJU239Su2lMgmN8taX5br1ZCg=="
       }
     },
     {
@@ -170,8 +170,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "vvpXf4ApzGh1JpT7B7GuLe4n75s/71GAznRNijP2j3u4LZhkhBZBa36ZjqnhA2mvJrRYyBWSlthujANuelMABA=="
+        "keyId": "dev-2",
+        "sig": "B2ArjraeKQFYzYfygpQ87lxv8v/BpD+JOdubiIfFMxAd+ApCn6d5SyTyKH+xuyG6Tp1dPbRi+y9p54vIN/fKCQ=="
       }
     },
     {
@@ -204,8 +204,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "e9/VuEVrDkk7p9AjRamkuFROIIyixDL3SAZCq3+YdXDAd1NdaZztBqH+pvT0VpeIYFa6z1lSx+dOqbsAIhIbDw=="
+        "keyId": "dev-2",
+        "sig": "Uyt5P6Jh+KccxKAUWIiMOOUs0XJyLPcqMWzkKE+YGAQw3QQg5ZOzbA4SyCf/dtrXaCDw/bp87BSbT8MUGUpdBQ=="
       }
     },
     {
@@ -238,8 +238,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "kpdQvW2W7mlOz4f/KQxd1Nzx6lahavVWtF1VyMQ/uGtXdkxTnTaFhvy4w2VivirIhytdjEYUMRT1E3BwbAGhDA=="
+        "keyId": "dev-2",
+        "sig": "z07MOJQwwN2DEa9R+vYPEo3B8KDBQbDcpZb8To8MQcu9A0wg1p7SsAEdgS0+HQ3UAcqZjakhEMqkvkminaaTBA=="
       }
     },
     {
@@ -272,8 +272,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "A0bWYsruWH7vG+/ZanoOV6pzNi8L13wx+SNFcqADzi+841nHkxshY6PXWmn0BRjK2Ov1jHp9ogcH0ZasVjrpAA=="
+        "keyId": "dev-2",
+        "sig": "+sjWv5HIWgHMvOzgPO63iOe3wnbGF96mjcmkqLDap2zMYltWOmuMA4AIi7QttYBzbKOwngfZ+18i+/1AO+7MCg=="
       }
     },
     {
@@ -306,8 +306,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "VnasXOn4aEcP0tJStrfirYg1pNT2gE5kv0/+FsUCym6p7YEmOAvjo1QpYvQtZv2H919K90g6dsQRdfRgaCHNBQ=="
+        "keyId": "dev-2",
+        "sig": "TzeO9Au3uU4WUi4M+nO2qOxlY0ZjYZJFus/uVEddvAGLpSqIPXBBShYmJsIYSSpfwdTdfZ26aGlol2LmunwKDg=="
       }
     },
     {
@@ -340,8 +340,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "OBlnd+UaMz538kuFYbKNvbiJSqSlLlL05E9pRNBgZvuapewZYv7Z1aogw9LB2ml1I3k4RExtD4QXin1pWAOzCg=="
+        "keyId": "dev-2",
+        "sig": "NU/ghhM+Ng1FtMUEsarWqSi24BuyduZFNiLs/lflxOC37C0Kl92rrvh6ywM5Ia9uBY3eywkPzHwEmOTUTf49Dw=="
       }
     },
     {
@@ -374,8 +374,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "q30v+w+wvIkGDtiu4dvpYunWmVyKq26n0LIKoF+WqVCSapFKkSg3U+WIdy98lw9uSiCMGaZnOhSwQdA9AlI5BA=="
+        "keyId": "dev-2",
+        "sig": "x7NuMXa/zsJiBpA837IC8IVdc561RxcxSqZNSNWS2rGczT2rn457xiAWmAyZ+z4+ct64qnyudfW0N1pU2GpUCA=="
       }
     },
     {
@@ -398,7 +398,7 @@
         "subdir": "skills/planning-and-task-breakdown",
         "target": "global"
       },
-      "sourceSha256": "b9e56ebc90e23675c92445d7baca687d065672720c109d24b0c388eaa5cd7e47",
+      "sourceSha256": "900b6865d5ca275285e91eb81816ec76433f64af7a19929799e25eb5078044fe",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -408,8 +408,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "13SjmgBvu6w13wAxs0+KRWHZ2+5MWmfqJthHjptOJQmEJ/2hQ+EBqRdkQxXnBlYeua2kxH37C+GBU2W5JqyKDQ=="
+        "keyId": "dev-2",
+        "sig": "yZqkP0uJmq6N4RZ1ZXP//9U+huBnqBPaEYFeWKCAZ0wOGfmKcakj2iGq7Wg/eW8m6nsOatL0d5GxneWYobEaDw=="
       }
     },
     {
@@ -432,7 +432,7 @@
         "subdir": "skills/incremental-implementation",
         "target": "global"
       },
-      "sourceSha256": "89601cb8562831cdb34a781de7ec2866334b0222d90caea2fb4539156cf8f08b",
+      "sourceSha256": "ff06544242d0b4fe2f3fd7a882117cadf7b2d2f83d259c5eb10185f37d855272",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -442,8 +442,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "AS/z4BDLjypTk+jyZi6yTvaziccy/QUdDkazD4jjnqMobx8rj4cIAh6JVw0DuttOUaPsFjeJrDy41ccnikTiDQ=="
+        "keyId": "dev-2",
+        "sig": "MeifBYwcqieZHWb9h7xj+b3f15aPmVkOX7Lm7duf1oHrSyrS5xRI7g78GK0pXZ6rXVHrR/wKe6DoPz7nI426Bg=="
       }
     },
     {
@@ -476,8 +476,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "WR/kBJwdot0RyBj39anHWI2+c2kXVgbG+knoZg5l/9tzYd6SuWBedClgH8eaAwj6OY9EDoZA8txonEyL+WE9CQ=="
+        "keyId": "dev-2",
+        "sig": "1+LSeUluA7e8DFEwVWi6+OHFD7cdCaO2i4N2SaQvhnlsBX73JtJFXSToFhtyTwsLxmWjBkacX337creRLolGAg=="
       }
     },
     {
@@ -510,8 +510,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "/fAzaOqpL/6GcHYU2IZTuOa3/bHipuIQbeMIXTdv2AwjCg9kWsC/B9nC2xCK9gNns/OHgY/1cNuENZYNx07mBQ=="
+        "keyId": "dev-2",
+        "sig": "fk+860kUY6ZNpCEST58G2bs5IzD2bF+1U9rkvp52RPP33aKEm1VreIoUZgtJ/T9jH8ad8QiXPD5Fi7VrBqQtBg=="
       }
     },
     {
@@ -544,8 +544,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "TfMdomr9cVje7tvnUaO9bNH+dWo4jOGkZZxm8Wgt5EbFws8Cx1/tHRUqKt3vUSolDky9cJ8viOzsLaaHd3LyDg=="
+        "keyId": "dev-2",
+        "sig": "qoUiodOdG9xGD6KIghk+lRnvJT+dpB67e+M/h5MzDkPAXPqrgCjPMCspRKVU+NrcRRfJ/T+nhyJaxf4VxtxPBA=="
       }
     },
     {
@@ -578,8 +578,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "rJ/wRr2mOL9gulIKQOuzmWEsjLmQyKlBaKnIuhYYgGIkrP+4OILlxL3lj9Bmksf/j9LoZVpOQyVD6x8mf1fcCQ=="
+        "keyId": "dev-2",
+        "sig": "AObKIuOmjrsxibNtxKeXwkY+/rKtn2UYo3RB6ogFdL/jGYW/yAcbIEQaGKT+EevRu1tfkuGTgoIlQuksS1v2Ag=="
       }
     },
     {
@@ -612,8 +612,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "R9DqGG02AwbQ9uPZz+sOa8i0f6RgoJOUM0wQYfcO3rJ/fynoxzsTC91gisb7G6l4RYF6ymOjP2hMadlAXJnqDA=="
+        "keyId": "dev-2",
+        "sig": "/xDgAl/aaF9SPjE3ep7L1Ny3A+wGpWj2Ois4cVApBTjGDoO3aSKuKFvsdsb2nEOj2AZt1hFbASTte+dRd/Q+Dg=="
       }
     },
     {
@@ -646,8 +646,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "xACIgTQPSCWxQR8So2OPvyKEeQ3s2JES53DALNceOruqVrirG4NGz8YY+Q7f1Jd66DZZB+3BG9w6x+ygSQZtDg=="
+        "keyId": "dev-2",
+        "sig": "dUPBpGGHFKjCFxc9bQ8H2wwAbWwa6xoHfdNgm1GuDesmdWkQ4D5DWG9GR46+EdJA26JxS/oFSXHcDfkFvwvfDA=="
       }
     },
     {
@@ -670,7 +670,7 @@
         "subdir": "skills/security-and-hardening",
         "target": "global"
       },
-      "sourceSha256": "8c8228964c52cf6826db732045432bac241f9d3894c2209ba50342a6563e3971",
+      "sourceSha256": "ae3aaaf8712ebbeda599213bdef91718577b7ac2d593b0b4dde4dfdf32b310c9",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -680,8 +680,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "KVaGORVZDGYElb5FuAvyPq6Ln1QkK+ra/zzN9AVO67Hod4gHbpT/ObP+hLl1TOToOvyUovzuHHSIjzdO2KslBw=="
+        "keyId": "dev-2",
+        "sig": "cNnYRcDidogtk4k8ng66SxSDfEkg3xcD1tEspnUb6ggfTygehVilRIiujUYMQtiqM8c+nqmhLlFPgGNEIdiYDQ=="
       }
     },
     {
@@ -704,7 +704,7 @@
         "subdir": "skills/performance-optimization",
         "target": "global"
       },
-      "sourceSha256": "e5082e9b55b426abe8f61141bdfeca1916e02d1f9e9f19e3c783fdf71447c553",
+      "sourceSha256": "d5664020c030b886cada5a5399b29113eb47ca6f7de3ce3626903b927b07b3a6",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -714,8 +714,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "3vO27Feo5RhaAhp9PvuLYWWWcGnXo6uRUIVuUsXBYvJPTNt1ZmOi059rbY02qUayAITf/wCiEQR0vfGwtzCsAQ=="
+        "keyId": "dev-2",
+        "sig": "V+AjVo35QGYhyT+O4BtrOZsJ/auWvkR96pYInxeKAd/iwQFyaea2RkN0fpodc+2f1QZOoauu72iso0CBy5MeCw=="
       }
     },
     {
@@ -738,7 +738,7 @@
         "subdir": "skills/observability-and-instrumentation",
         "target": "global"
       },
-      "sourceSha256": "8ca62d8cc82c5b9b89746edf66eeaaa403a1e43872451a44dd22f15c5a758fc6",
+      "sourceSha256": "cb84b64f3fa4d2be9a06e8a60f01df70460570e649668fcdec9df35d3949d516",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -748,8 +748,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "wPTe0hiEiUsbw52Pygnh6uR5XOjIWcXDnTL9iRUvQ+tsFf+8sr4ziPLG6yusezLVeDsMW9GD+xMPewBcT8ztBQ=="
+        "keyId": "dev-2",
+        "sig": "/Qz5owfc2iKl0wkzaYRILbWwz2OL/CrFUQ1Dp5XiJy9Zg6U9qkCyjx1UUJmb5b4eBXL8+N9NOShpcf2TgM9/BA=="
       }
     },
     {
@@ -772,7 +772,7 @@
         "subdir": "skills/shipping-and-launch",
         "target": "global"
       },
-      "sourceSha256": "5bbe63c8bdcabcbdda1989b278860c952f385b60ad0a960c0d1a3fda4d2add50",
+      "sourceSha256": "71d1deca4415fd01ce8fc67ab531b214098f8d799bbd5456fd835f008f51e824",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -782,8 +782,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "yHpHQGNm+S1zXgqhULt3w3kxaMLvboezQzqGJj2aSFx5SgHh017ISylhuCZtwYz1X51P2a3yeR/YK/CDZanMAg=="
+        "keyId": "dev-2",
+        "sig": "I/cYjZmjbFLA3FfHxr/IgUQRwdRzhl1eE9aH8PIZ7kOWDFeM7gyVQ/FsfAcD95jVuU2Bw4E/n7yh9PllpbgMBQ=="
       }
     },
     {
@@ -816,8 +816,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "LiEfLOJ/YuGaA3bECiEqaDyPAHaXZBh9uRRiLYEz0plfCfCPCB6agt4NEZanKlv9Vm05LkHDBaPYJr7fd0uMBQ=="
+        "keyId": "dev-2",
+        "sig": "6tAmvRYqaTQmKHAlgdQlRqx7b0hXXGKLgd6Ezd1vhAo2n1KDpD8/wUx4rlcbupHpb1v5CXAEOT41WETMWuo9Dg=="
       }
     },
     {
@@ -850,8 +850,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "x3lULsijjzbpgYIo/ZMUsD0TAqBAMk3DsytoEQRZWUuv0aTJkze71GDrr8ZjdXHj6yuQXqB0fce1eWthOYRQAQ=="
+        "keyId": "dev-2",
+        "sig": "geHMC2ti6xdwDSEyP5N00kaVYcYkGU0qz5rEH2UGbjrKm2bCujgOEdR055dnbSE7sGR4g4x4OjUwKgBJo2gHBA=="
       }
     },
     {
@@ -915,8 +915,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "InPR/qeS6d2G0KliVgk9rqYHPGIUa/80VsTNc4Z5hD4rVvSJUc8lpG8iX8EARJGtVaOZSLjLawQ/W8uu/52MAg=="
+        "keyId": "dev-2",
+        "sig": "CK3MtqTQixZDTzZGD3k3uJrSAsWISnS9TLKO536HF4RJovimNL0fVSY3Zj6/ReV0QGyitnfFDyNUSjDq6Ln1Bg=="
       }
     },
     {
@@ -980,8 +980,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "TiLK6rNRSm83rHO1uSCosY2rp6Zh1uriGVhMatv+Wu4lfj4/Z/Sp6Oy3d14sYvM15sSSMDnsYvDBpMT/E9o3CA=="
+        "keyId": "dev-2",
+        "sig": "M300SoJkDMgPSLTjR0wv/JCUyQPeNtyOt4stzevs7CkvMHig/OEJu77jx5kzhX6aVyIOg1GJOzGJsivzVcKmCg=="
       }
     },
     {
@@ -1075,8 +1075,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "registry-ci",
-        "sig": "D+n5VOvS6z6/qj2RyoA17TYb4jDX0iPnplR/vB4P1a9u5x18JGg7CkmlKEN6dJmujRj0MZwEFU0WdDN7ZlUTAw=="
+        "keyId": "dev-2",
+        "sig": "DlvIl+byaOxfxAEfMcHUiusbtU7B7Vre9TF8ffCci7hKgGXbS3c76ZlS1RjSEUhBIXu6izyNMtdtKJgOxaU4CQ=="
       }
     },
     {
@@ -1223,7 +1223,7 @@
       "displayName": "MES 智能体问答",
       "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
       "type": "plugin",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": "dllhl",
       "license": "MIT",
       "repo": "https://github.com/eppen/luban-plugins",
@@ -1238,7 +1238,7 @@
         "subdir": "plugins/mes-agent",
         "target": "global"
       },
-      "sourceSha256": "f8c2ca2f2d83898d2d6e327f1d65124988e8d36db428ae75af9c130a3afb1101",
+      "sourceSha256": "1286de74532f147dc94c0f6a779b58e398a511e7cc719199c77e4aababfcc5ac",
       "ctxApi": ">=0.1 <1.0",
       "tools": [
         {
@@ -1284,7 +1284,7 @@
       "signature": {
         "algo": "ed25519",
         "keyId": "dev-2",
-        "sig": "L18u7XM6ZE+ZX8WJpbLP7d5/4VG+TsoRQWLj02zRPf9T04IAbWdb5TgdWgzVwRifB3Hs1d2/iZiENlBsbvTtBA=="
+        "sig": "NX8Wv7c8KfT0HMpNHMGFT6K6iQfGZNdTSgRx1AIBKNNFqMVoSniEN7Q5GTA4Cl4rWHjO1hh2VtAD7yDwk7RRAQ=="
       }
     }
   ]
