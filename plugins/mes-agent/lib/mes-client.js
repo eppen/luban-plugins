@@ -35,6 +35,9 @@ function loadConfig(env, opts) {
   };
   const baseUrl = str('MES_BASE_URL', 'baseUrl').replace(/\/+$/, '');
   const token = str('MES_TOKEN', 'token');
+  // 登录凭据：有它才能在对话内两步登录（无 token 时自动拉起），没有则只能走浏览器登录页
+  const username = str('MES_USERNAME', 'username');
+  const password = str('MES_PASSWORD', 'password');
   const agentCode = str('MES_AGENT_CODE', 'agentCode') || DEFAULT_AGENT_CODE;
   // 对话接口路径：默认 /ai/agent/chat（源码版）；旧版 jar 可能是 /agent/chat，可用 MES_CHAT_PATH 覆盖
   const chatPath = (str('MES_CHAT_PATH', 'chatPath') || '/ai/agent/chat').replace(/^\/?/, '/');
@@ -46,7 +49,18 @@ function loadConfig(env, opts) {
     const n = parseInt(timeoutRaw, 10);
     if (Number.isFinite(n) && n > 0) timeoutMs = n;
   }
-  return { baseUrl, token, agentCode, chatPath, loginUrl, timeoutMs };
+  return { baseUrl, token, username, password, agentCode, chatPath, loginUrl, timeoutMs };
+}
+
+/**
+ * 判断 MES 错误是不是「token 缺失 / 过期」。命中则可自动拉起登录流程。
+ * @param {number} httpStatus
+ * @param {string} msg  MES 返回的 msg / message
+ */
+function isTokenExpired(httpStatus, msg) {
+  if (httpStatus === 401 || httpStatus === 403) return true;
+  const s = String(msg || '');
+  return /未登录|登录失效|登录已失效|请先登录|token|令牌|过期|失效/i.test(s);
 }
 
 /**
@@ -69,17 +83,27 @@ async function callMesChat(cfg, args, opts) {
     };
   }
   if (!cfg.token) {
-    const loginHint = cfg.loginUrl
-      ? '登录页：' + cfg.loginUrl + '（浏览器打开，用账号密码 + 图形验证码登录）'
-      : '未配置 MES 部署地址，无法给出登录页';
+    // 有凭据 → 引导对话内两步登录；无凭据 → 只能先配账号密码
+    if (cfg.username && cfg.password) {
+      return {
+        error: 'no-token',
+        nextAction: 'login_start',
+        loginUrl: cfg.loginUrl || '',
+        message:
+          '未配置 MES token，但已有账号密码。请调用 pl__mes-agent__login_start 取验证码图' +
+          '（图片存到本地路径），人工识别后用 pl__mes-agent__login_finish 提交验证码，' +
+          '插件会把 token 写回配置，之后 chat 立即可用。'
+      };
+    }
     return {
-      error: 'no-token',
+      error: 'no-credentials',
+      nextAction: 'configure',
       loginUrl: cfg.loginUrl || '',
       message:
-        '未配置 MES token。' +
-        loginHint +
-        '。登录后从浏览器开发者工具（Network 面板 /sys/login 响应 或 Cookie）里复制 token，' +
-        '填入环境变量 MES_TOKEN 或 ~/.luban/mes-agent.json 的 token 字段。token 12 小时过期，过期后需重新登录获取。'
+        '未配置 MES token，也没有账号密码，无法自动登录。请配置 MES_USERNAME / MES_PASSWORD' +
+        '（环境变量），或在 ~/.luban/mes-agent.json 里写 username / password 字段' +
+        '（password 是敏感项，建议走配置文件或环境变量，不要贴进对话）。' +
+        '也可手动登录 MES 后把 token 填进 MES_TOKEN / 配置文件 token 字段。'
     };
   }
   const message = typeof args.message === 'string' ? args.message.trim() : '';
@@ -124,6 +148,19 @@ async function callMesChat(cfg, args, opts) {
   }
   if (!res.ok || (payload && payload.code !== 0)) {
     const msg = (payload && (payload.msg || payload.message)) || ('HTTP ' + res.status);
+    // token 缺失 / 过期 → 引导重新登录，而不是让模型去猜一句含糊的 MES 报错
+    if (isTokenExpired(res.status, msg)) {
+      return {
+        error: 'token-expired',
+        nextAction: 'login_start',
+        loginUrl: cfg.loginUrl || '',
+        httpStatus: res.status,
+        code: payload && payload.code,
+        message:
+          'MES token 无效或已过期（' + msg + '）。请调用 pl__mes-agent__login_start 取验证码图，' +
+          '再用 pl__mes-agent__login_finish 提交验证码重新登录；成功后 token 会写回配置。'
+      };
+    }
     let message = 'MES 返回错误：' + msg;
     if (res.status === 404) {
       message += '（HTTP 404：接口路径可能不对。当前用 ' + chatPath + '；若部署的是旧版 jar，可设 MES_CHAT_PATH=/agent/chat 后重试）';
@@ -190,8 +227,10 @@ function renderResponse(value) {
   if (v.error) {
     const head = 'mes_agent 错误：' + v.error;
     const tail = v.message ? ' — ' + v.message : '';
-    const login = v.loginUrl ? '\n登录页：' + v.loginUrl : '';
-    return head + tail + login;
+    // 登录页降级为备选路径：宿主渲染 Markdown 时可直接点，不渲染也能复制
+    const login = v.loginUrl ? '\n登录页（备选）：[打开 MES 登录页](<' + v.loginUrl + '>)' : '';
+    const next = v.nextAction ? '\n下一步：' + nextActionText(v.nextAction) : '';
+    return head + tail + login + next;
   }
   const lines = [];
   const agent = v.agentName
@@ -239,4 +278,15 @@ function renderResponse(value) {
   return lines.join('\n');
 }
 
-module.exports = { loadConfig, callMesChat, renderResponse };
+function nextActionText(action) {
+  switch (action) {
+    case 'login_start':
+      return '调用 pl__mes-agent__login_start 取验证码图，人工识别后用 pl__mes-agent__login_finish 提交';
+    case 'configure':
+      return '先配置 MES 账号密码（MES_USERNAME / MES_PASSWORD 或配置文件 username / password）';
+    default:
+      return String(action);
+  }
+}
+
+module.exports = { loadConfig, callMesChat, renderResponse, isTokenExpired };

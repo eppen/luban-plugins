@@ -19,6 +19,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { loadConfig, callMesChat, renderResponse } = require('./lib/mes-client.js');
+const mesLogin = require('./lib/mes-login.js');
 
 // ── 配置文件 ────────────────────────────────────────────────────────────────
 
@@ -52,10 +53,58 @@ async function chatHandler(args) {
   return renderResponse(result);
 }
 
+// 把登录结果渲染成模型可读文本（成功 / need-otp / 失败统一走这里）
+function renderLogin(value) {
+  const v = value && typeof value === 'object' ? value : {};
+  if (v.ok) {
+    const lines = ['MES 登录成功，token 已写回 ~/.luban/mes-agent.json（' + v.tokenMasked + '）。'];
+    lines.push('现在可以直接用 pl__mes-agent__chat 提问了。');
+    return lines.join('\n');
+  }
+  return renderResponse(v);
+}
+
+async function loginStartHandler() {
+  const cfg = buildConfig();
+  if (!cfg.baseUrl) {
+    return renderResponse({
+      error: 'no-base-url',
+      message: '未配置 MES 部署地址：设置环境变量 MES_BASE_URL，或在 ~/.luban/mes-agent.json 里写 baseUrl'
+    });
+  }
+  const result = await mesLogin.loginStart(cfg);
+  if (result && result.ok) {
+    const lines = [];
+    lines.push('已取到 MES 登录验证码，图片已保存到：' + result.captchaPath);
+    lines.push('请人工识别图中文字，然后调用 pl__mes-agent__login_finish 并传入 captcha（验证码文字）。');
+    lines.push('stateId：' + result.stateId + '（可选，传回可校验会话一致）');
+    if (result.loginUrl) {
+      lines.push('若看不清验证码，也可 [打开 MES 登录页](<' + result.loginUrl + '>) 手动登录后填 token。');
+    }
+    return lines.join('\n');
+  }
+  return renderLogin(result);
+}
+
+async function loginFinishHandler(args) {
+  const a = args && typeof args === 'object' ? args : {};
+  const cfg = buildConfig();
+  if (!cfg.baseUrl) {
+    return renderResponse({
+      error: 'no-base-url',
+      message: '未配置 MES 部署地址：设置环境变量 MES_BASE_URL，或在 ~/.luban/mes-agent.json 里写 baseUrl'
+    });
+  }
+  const result = await mesLogin.loginFinish(cfg, a);
+  return renderLogin(result);
+}
+
 // ── 导出 ────────────────────────────────────────────────────────────────────
 
 module.exports = {
   tools: {
-    chat: { handler: chatHandler }
+    chat: { handler: chatHandler },
+    login_start: { handler: loginStartHandler },
+    login_finish: { handler: loginFinishHandler }
   }
 };

@@ -1,11 +1,11 @@
 {
   "name": "mes-agent",
-  "version": "0.1.1",
-  "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
+  "version": "0.2.0",
+  "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话；无 token 时可在对话内两步登录自动获取",
   "main": "index.js",
   "permissions": {
     "fsRead": true,
-    "fsWrite": false,
+    "fsWrite": true,
     "shell": false,
     "net": true,
     "env": true
@@ -23,7 +23,18 @@
       "token": {
         "type": "string",
         "label": "访问令牌",
-        "description": "手动登录 MES 后获取（/sys/login 的 token），12 小时过期",
+        "description": "留空即可：无 token 时插件会用下面的账号密码在对话内自动登录并写回",
+        "secret": true
+      },
+      "username": {
+        "type": "string",
+        "label": "MES 账号",
+        "description": "用于对话内自动登录（/sys/login）；也可用环境变量 MES_USERNAME"
+      },
+      "password": {
+        "type": "string",
+        "label": "MES 密码",
+        "description": "用于对话内自动登录；也可用环境变量 MES_PASSWORD",
         "secret": true
       },
       "agentCode": {
@@ -75,6 +86,39 @@
           }
         },
         "required": ["message"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "login_start",
+      "description": "开始 MES 登录：取验证码图片并存到本地路径，返回图片路径供人工识别。无 token 或 token 过期时先调这个。",
+      "readOnly": false,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "login_finish",
+      "description": "完成 MES 登录：提交人工识别的验证码（captcha），成功后把 token 写回配置。账号开了二次验证时需再传 otpCode。",
+      "readOnly": false,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "captcha": {
+            "type": "string",
+            "description": "人工识别的验证码文字（看 login_start 返回的图片路径）"
+          },
+          "stateId": {
+            "type": "string",
+            "description": "可选：login_start 返回的 stateId，用于校验会话一致"
+          },
+          "otpCode": {
+            "type": "string",
+            "description": "可选：二次验证动态口令（账号开启 OTP 时才需要）"
+          }
+        },
         "additionalProperties": false
       }
     }
