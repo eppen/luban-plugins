@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-24T02:49:28Z",
+  "updatedAt": "2026-11-24T06:08:15Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -1223,7 +1223,7 @@
       "displayName": "MES 智能体问答",
       "description": "MES 智能体问答：把 MES（mes-ai）的 /ai/agent/chat 接口包成模型可调用的工具，自然语言提问，支持多轮对话",
       "type": "plugin",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "author": "dllhl",
       "license": "MIT",
       "repo": "https://github.com/eppen/luban-plugins",
@@ -1238,7 +1238,7 @@
         "subdir": "plugins/mes-agent",
         "target": "global"
       },
-      "sourceSha256": "1286de74532f147dc94c0f6a779b58e398a511e7cc719199c77e4aababfcc5ac",
+      "sourceSha256": "66a5c50ffb7d9d028e31e579315268dcaa247f7d5c49e8ba6c506d8d2cc6622d",
       "ctxApi": ">=0.1 <1.0",
       "tools": [
         {
@@ -1266,11 +1266,44 @@
             ],
             "additionalProperties": false
           }
+        },
+        {
+          "name": "login_start",
+          "description": "开始 MES 登录：取验证码图片并存到本地路径，返回图片路径供人工识别。无 token 或 token 过期时先调这个。",
+          "readOnly": false,
+          "parameters": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "login_finish",
+          "description": "完成 MES 登录：提交人工识别的验证码（captcha），成功后把 token 写回配置。账号开了二次验证时需再传 otpCode。",
+          "readOnly": false,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "captcha": {
+                "type": "string",
+                "description": "人工识别的验证码文字（看 login_start 返回的图片路径）"
+              },
+              "stateId": {
+                "type": "string",
+                "description": "可选：login_start 返回的 stateId，用于校验会话一致"
+              },
+              "otpCode": {
+                "type": "string",
+                "description": "可选：二次验证动态口令（账号开启 OTP 时才需要）"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       ],
       "permissions": {
         "fsRead": true,
-        "fsWrite": false,
+        "fsWrite": true,
         "shell": false,
         "net": true,
         "env": true
@@ -1284,7 +1317,7 @@
       "signature": {
         "algo": "ed25519",
         "keyId": "registry-ci",
-        "sig": "MLB3/gLbz0cM8KPfiG2tOVw0Nx3GxwdI+MDCtTmb0OXUiXgT8evjAvOmBnowzo7orUDeAkD1V1A2KMAZ996KDw=="
+        "sig": "gthuwaPwAQ7fWG3+DXdaNMPIFN2VFsS/R3pmoGYfs3P3YwS7Fv39Kgb+NxrzGf/Q194ZXnRygmD9F45tk8KQCw=="
       }
     }
   ]
