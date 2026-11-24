@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-24T02:37:30Z",
+  "updatedAt": "2026-11-24T02:49:28Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -20,7 +20,7 @@
       "displayName": "Demo 小工具",
       "description": "Luban 本地插件示例：本机时间与工作区磁盘剩余空间",
       "type": "plugin",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": "liuhualiang",
       "license": "MIT",
       "repo": "https://github.com/eppen/luban-plugins",
@@ -34,7 +34,7 @@
         "subdir": "plugins/demo",
         "target": "global"
       },
-      "sourceSha256": "e268cce256a861cfc58aed194365074d2dcc5c10028e56be0980718ee10b2ee0",
+      "sourceSha256": "2abab9839806bbf808b58c2c8631e5ce2974a950ef00b7cb6a00a91d1ff58fd4",
       "ctxApi": ">=0.1 <1.0",
       "tools": [
         {
@@ -48,7 +48,7 @@
         },
         {
           "name": "disk_free",
-          "description": "返回工作区所在磁盘的剩余空间",
+          "description": "列出本机所有磁盘的剩余/已用空间（标注工作区所在盘）",
           "readOnly": true,
           "parameters": {
             "type": "object",
@@ -72,7 +72,7 @@
       "signature": {
         "algo": "ed25519",
         "keyId": "registry-ci",
-        "sig": "2rzZ58imT0tdomQPC7ce7nfeFPSZJBKfEmdoGxg2oxGuuQuvunmztyKF+jaMxne40DBXyDv1/xeIveUriYiYAw=="
+        "sig": "FMyknpJoV/dZF4qaeTdxUj7egXsDvS/eowIHJw7hB1Z0Mpinm+kNmzu0DpKLEPn4GLr1zANZVX49G3hsNCVWAQ=="
       }
     },
     {
