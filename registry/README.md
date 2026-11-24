@@ -177,7 +177,11 @@ git push origin main
   **不需要信任表**：纯 Markdown 不给模型新增执行能力，装完下一轮就被 `skills.js` 扫到。
   已装清单写在 `<skills 根>/.installed.json` 而**不写进技能目录** —— 写进去就成了包内容，
   `sourceSha256` 复算必然不符（与插件回收站元数据写同级 `<条目>.json` 同一个理由）。
-- 当前三个条目（`demo` / `changelog-draft` / `cc-safety-net`）都用开发密钥 `dev-2` 签名
-  （私钥在 `~/.luban-keys/dev-2.priv.json`，不入库）。
+- 当前索引条目由 `registry-ci` 签名：私钥只存在于 GitHub secret `REGISTRY_SIGNING_KEY`，
+  合并到 `main` 后由 `.github/workflows/registry-sign.yml` 自动重签并回写。
+  私钥允许是 JSON 原文，也允许是**它的 base64**（secret 里多套一层很常见，`ci-sign.mjs` 两种都认）。
+- 本地密钥 `dev-2`（`~/.luban-keys/dev-2.priv.json`，不入库）仍可用于离线验签、复算与调试；
+  用它在本地 `sign` 后推送，CI 会再把条目改成 `registry-ci` 签名（多一次重签提交）。
+  所以**发布时最好只让 CI 签**，本地签名留给「没有网络 / 需要在 CI 外验证」的场景。
   早期的 `dev-1` 私钥已丢失，其公钥 `keys/dev-1.pub` 仅作历史保留，不再列入 `signingKeys`。
   面向公众发布前应重新 `keygen` 一个新 `keyId` 并重签。
