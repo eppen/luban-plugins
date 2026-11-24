@@ -1,6 +1,6 @@
 name: registry-sign
 
-# 自动给 registry.json 里的条目「同步包内容 + 重签」。
+# 自动给 registry.json 里的条目「同步包内容 + 重签 + 对齐 tag」。
 #
 # 为什么需要它：
 #   · 条目的 version / tools / permissions / sourceSha256 必须与 plugins/<name> 实际内容一致，
@@ -8,10 +8,16 @@ name: registry-sign
 #   · 私钥只在维护者手里，本机没有 registry-ci 那把私钥，本地重签不了 CI 签的条目。
 #   · 所以把「同步 + 重签」交给 CI：私钥作为 secret 注入，合并后自动跑。
 #
+# 为什么还要对齐 tag：
+#   安装端是按 tag 取包的（git clone --branch <name>-v<version>），而本 workflow 同步的是
+#   main 上的最新内容。包改了但 tag 没动，索引与用户真正拿到的内容就对不上，装的时候报
+#   「sourceSha256 不符：索引 X、实际 Y」。ci-sign.mjs 因此会把落后 / 缺失的 tag 指到当前
+#   提交，由下面的步骤强制推送，保证「索引说的内容」== 「tag 里的内容」。
+#
 # 触发：
 #   · push 到 main 且改了 plugins/ / skills/ / registry/ —— 自动同步重签并提交；
-#   · PR —— 只跑 --check 门禁（索引是否已同步），不改文件、不提交；
-#   · workflow_dispatch —— 手动补签。
+#   · PR —— 只跑 --check 门禁（索引是否已同步），不改文件、不提交、不碰 tag；
+#   · workflow_dispatch —— 手动补签 / 手动对齐 tag。
 
 on:
   push:
@@ -29,7 +35,7 @@ on:
       - 'scripts/ci-sign.mjs'
   workflow_dispatch:
 
-# 推送分支上要提交回写 registry.json，需要写权限
+# 推送分支上要提交回写 registry.json、并强制推送 tag，需要写权限
 permissions:
   contents: write
 
@@ -44,6 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 需要完整历史 + tag：ci-sign 要拿 <name>-v<version> 的 tree 跟 HEAD 比对
+          fetch-depth: 0
+          fetch-tags: true
 
       - uses: actions/setup-node@v4
         with:
@@ -53,7 +63,7 @@ jobs:
       - name: 校验插件与技能清单
         run: node scripts/check-plugins.mjs
 
-      # 索引是否已与包内容同步 + 现有签名是否仍有效
+      # 索引是否已与包内容同步 + 现有签名是否仍有效（tag 落后只告警，由 sign 任务追平）
       - name: 检查索引同步与签名
         env:
           CI_SIGN_KEY: ${{ secrets.REGISTRY_SIGNING_KEY }}
@@ -65,7 +75,7 @@ jobs:
           echo "$CI_SIGN_KEY" > "$RUNNER_TEMP/ci-key.json"
           node scripts/ci-sign.mjs --key "$RUNNER_TEMP/ci-key.json" --check
 
-  # ---------- push main / 手动：同步重签并提交 ----------
+  # ---------- push main / 手动：同步重签、对齐 tag、提交并推送 ----------
   sign:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -74,6 +84,8 @@ jobs:
         with:
           # 用 token 提交，需要完整历史与写权限
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          fetch-tags: true
 
       - uses: actions/setup-node@v4
         with:
@@ -82,7 +94,7 @@ jobs:
       - name: 校验插件与技能清单
         run: node scripts/check-plugins.mjs
 
-      - name: 同步索引并重签
+      - name: 同步索引、重签、对齐 tag
         env:
           CI_SIGN_KEY: ${{ secrets.REGISTRY_SIGNING_KEY }}
         run: |
@@ -91,9 +103,9 @@ jobs:
             exit 1
           fi
           echo "$CI_SIGN_KEY" > "$RUNNER_TEMP/ci-key.json"
-          node scripts/ci-sign.mjs --key "$RUNNER_TEMP/ci-key.json"
+          node scripts/ci-sign.mjs --key "$RUNNER_TEMP/ci-key.json" --moved-tags "$RUNNER_TEMP/moved-tags.txt"
 
-      - name: 提交签名结果
+      - name: 提交签名结果并推送 tag
         run: |
           git config user.name  "luban-ci-sign[bot]"
           git config user.email "luban-ci-sign[bot]@users.noreply.github.com"
@@ -103,4 +115,14 @@ jobs:
           else
             git commit -m "chore(registry): 同步索引并重签 [ci-sign]"
             git push
+          fi
+          # 安装端按 tag 取包 —— 索引更新后 tag 必须指向同一份内容
+          if [ -s "$RUNNER_TEMP/moved-tags.txt" ]; then
+            while IFS= read -r t; do
+              [ -n "$t" ] || continue
+              echo "推送 tag $t → $(git rev-parse --short HEAD)"
+              git push --force origin "refs/tags/$t"
+            done < "$RUNNER_TEMP/moved-tags.txt"
+          else
+            echo "没有需要对齐的 tag"
           fi

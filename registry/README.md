@@ -80,9 +80,18 @@ luban skill remove changelog-draft               # 移进 ~/.luban/skills-trash/
 sourceSha256 算法（目录哈希，与机器 / 时间无关）
   1. 遍历目录，跳过 node_modules / .git / .DS_Store，符号链接跳过并告警；
   2. 文件按相对路径（用 / 分隔）的 UTF-8 字节序升序排序；
-  3. 对每个文件算 sha256 hex（文本文件先把 CRLF 归一成 LF），向总哈希喂入 `<相对路径>\0<文件 sha256 hex>\n`；
+  3. 对每个文件算 sha256 hex（对**克隆 / 导出后的字节**计算：`.gitattributes` 的 `* text=auto eol=lf`
+     保证仓库内与 checkout / archive 出来的一律 LF，所以等价于「CRLF 归一成 LF」），
+     向总哈希喂入 `<相对路径>\0<文件 sha256 hex>\n`；
   4. 总哈希的 hex 即 sourceSha256。
 ```
+
+**两份内容必须严格对齐**：索引里的 `sourceSha256` 只对「一份具体内容」成立，而安装端是
+`git clone --branch <name>-v<version>` 按 tag 取包的。所以 tag 必须指向那份内容 ——
+包改了却没动 tag，安装就会报「sourceSha256 不符：索引 X、实际 Y」。
+`scripts/ci-sign.mjs` 在同步索引时会顺手校验，并把落后 / 缺失的 tag 指到当前提交
+（CI 里自动强制推送，见 `.github/workflows/registry-sign.yml`）。
+手工改包后要发版，记得 `git tag -f <name>-v<version>` 再推，或者直接把 PR 交给 CI。
 
 复算方式（证明可复现）：
 
