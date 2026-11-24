@@ -92,8 +92,23 @@ function signEntry(entry) {
 // ---------- sourceSha256：目录确定性哈希（算法见 registry/README.md）----------
 // 1. 遍历目录，跳过 node_modules / .git / .DS_Store，符号链接跳过；
 // 2. 文件按相对路径（/ 分隔）的 UTF-8 字节序升序排序；
-// 3. 每个文件向总哈希喂 `<相对路径>\0<文件 sha256 hex>\n`；
-// 4. 总哈希 hex 即 sourceSha256。
+// 3. 每个文本文件先把 CRLF 归一成 LF，再算 sha256 hex（见 fileHash 注释）；
+// 4. 每个文件向总哈希喂 `<相对路径>\0<文件 sha256 hex>\n`；
+// 5. 总哈希 hex 即 sourceSha256。
+//
+// 为什么必须归一化：`.gitattributes` 强制仓库内一律 LF，所以 CI（Linux checkout）
+// 与市场（git archive / 按 tag 拉包）拿到的都是 LF；但 Windows 工作区在
+// core.autocrlf=true 下可能残留 CRLF —— git 自己认为「CRLF 工作区 == LF 仓库」
+// 因此 git status 干净，字节流却不同。若直接对工作区字节算哈希，本地算出的值
+// 与市场复算的值必然不符，安装时报「sourceSha256 不符」。
+function fileHash(file) {
+  const buf = fs.readFileSync(file);
+  // 含 NUL 的按二进制原样哈希，避免把非文本文件（图片等）改坏
+  if (buf.includes(0)) return createHash('sha256').update(buf).digest('hex');
+  const lf = buf.toString('utf8').replace(/\r\n/g, '\n');
+  return createHash('sha256').update(Buffer.from(lf, 'utf8')).digest('hex');
+}
+
 function hashDir(dir) {
   const files = [];
   (function walk(d) {
@@ -112,8 +127,7 @@ function hashDir(dir) {
   const h = createHash('sha256');
   for (const f of files) {
     const rel = path.relative(dir, f).split(path.sep).join('/');
-    const fileHash = createHash('sha256').update(fs.readFileSync(f)).digest('hex');
-    h.update(rel + '\0' + fileHash + '\n');
+    h.update(rel + '\0' + fileHash(f) + '\n');
   }
   return h.digest('hex');
 }
@@ -143,6 +157,7 @@ function readSkillManifest(dir) {
 
 // ---------- 主流程 ----------
 let changed = 0;
+let resigned = 0;
 let signed = 0;
 const problems = [];
 
@@ -175,10 +190,12 @@ for (const entry of entries) {
   // 重签（无论内容是否变化都重签，保证 keyId / 签名新鲜）
   const sig = signEntry(entry);
   const oldSig = entry.signature?.sig;
+  const oldKeyId = entry.signature?.keyId;
   entry.signature = { algo: 'ed25519', keyId: priv.keyId, sig };
   signed++;
-  if (sig !== oldSig) {
-    console.log(`  SIGN ${entry.name} (keyId=${priv.keyId}${sig !== oldSig ? '，签名已更新' : ''})`);
+  if (sig !== oldSig || oldKeyId !== priv.keyId) {
+    resigned++;
+    console.log(`  SIGN ${entry.name} (keyId=${priv.keyId}，签名已更新)`);
   } else {
     console.log(`  OK   ${entry.name} (签名未变)`);
   }
@@ -191,14 +208,21 @@ if (problems.length) {
 
 if (checkOnly) {
   // --check：不写文件。只要「同步会产生变更」或「签名被换过」就算未同步。
-  if (changed > 0) {
-    console.error(`\n--check：索引与包内容不同步（${changed} 个条目需要更新），请跑 ci-sign.mjs 并提交。`);
+  if (changed > 0 || resigned > 0) {
+    console.error(`\n--check：索引与包内容不同步（${changed} 个内容有变、${resigned} 个签名需更新），请跑 ci-sign.mjs 并提交。`);
     process.exit(1);
   }
   console.log('\n--check：索引已与包内容同步，签名有效。');
   process.exit(0);
 }
 
+// 无变化时**不写文件**：否则会白白刷新 updatedAt，
+// 而 workflow 的 push 触发路径包含 registry/** —— CI 提交 → 再触发自己，无限循环。
+if (changed === 0 && resigned === 0) {
+  console.log(`\n索引已最新（${signed} 个条目），未写文件。`);
+  process.exit(0);
+}
+
 registry.updatedAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 fs.writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2) + '\n');
-console.log(`\n已同步并重签 ${signed} 个条目（${changed} 个内容有变），写入 ${REGISTRY_PATH}`);
+console.log(`\n已同步并重签 ${signed} 个条目（${changed} 个内容有变、${resigned} 个签名更新），写入 ${REGISTRY_PATH}`);

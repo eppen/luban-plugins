@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-24T01:51:02Z",
+  "updatedAt": "2026-11-24T02:15:37Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -34,7 +34,7 @@
         "subdir": "plugins/demo",
         "target": "global"
       },
-      "sourceSha256": "9d8551ee49e211d630bc3842ac3f51a46897877ca49a152f0c4a9d73b01f94c1",
+      "sourceSha256": "e268cce256a861cfc58aed194365074d2dcc5c10028e56be0980718ee10b2ee0",
       "ctxApi": ">=0.1 <1.0",
       "tools": [
         {
@@ -72,7 +72,7 @@
       "signature": {
         "algo": "ed25519",
         "keyId": "dev-2",
-        "sig": "951hCdRGdctPVpV3of3d5RW2crAWQlBt35YLISMXfsRPRwBGrXiIN+3v7yZK3I2N3Aoiuvp7BO33fMLmss2IDw=="
+        "sig": "1djvUygMkYKSvzCrtICZpScr7oZz80WFyMarvTB29XvKGIMzWQxrRQefxLag5412e833HKUpyNbCzRDVQtlPCw=="
       }
     },
     {
@@ -94,7 +94,7 @@
         "subdir": "skills/changelog-draft",
         "target": "global"
       },
-      "sourceSha256": "d520a4ba9c2a075ab993d2ca9a3a3cb8f18a2b97661671ba2d89e3c965834585",
+      "sourceSha256": "807f066342c0c90b9accd011d6f009b5650c1e093eab9765585c1710eaee7a6b",
       "ctxApi": ">=0.1 <1.0",
       "tools": [],
       "permissions": {},
@@ -107,7 +107,7 @@
       "signature": {
         "algo": "ed25519",
         "keyId": "dev-2",
-        "sig": "6fWRcCcGgwcX5niU96ea2knPlMuwONZ09pmm0IrObIDWoghdhHdBLu2nfBT6VeJU239Su2lMgmN8taX5br1ZCg=="
+        "sig": "1fGrM5D5TqcnvYW0ksf+ERRrQYGzQPMtadM2L8RlARbyEjSUom4TrEPY7DaMEfkNeEyR6LXrSjLE/HdhWogSAA=="
       }
     },
     {

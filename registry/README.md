@@ -80,7 +80,7 @@ luban skill remove changelog-draft               # 移进 ~/.luban/skills-trash/
 sourceSha256 算法（目录哈希，与机器 / 时间无关）
   1. 遍历目录，跳过 node_modules / .git / .DS_Store，符号链接跳过并告警；
   2. 文件按相对路径（用 / 分隔）的 UTF-8 字节序升序排序；
-  3. 对每个文件算 sha256 hex，向总哈希喂入 `<相对路径>\0<文件 sha256 hex>\n`；
+  3. 对每个文件算 sha256 hex（文本文件先把 CRLF 归一成 LF），向总哈希喂入 `<相对路径>\0<文件 sha256 hex>\n`；
   4. 总哈希的 hex 即 sourceSha256。
 ```
 
