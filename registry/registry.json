@@ -1,6 +1,6 @@
 {
   "registryVersion": 1,
-  "updatedAt": "2026-11-24T02:15:37Z",
+  "updatedAt": "2026-11-24T02:37:30Z",
   "schema": "./entry.schema.json",
   "signingKeys": [
     {
@@ -71,8 +71,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "1djvUygMkYKSvzCrtICZpScr7oZz80WFyMarvTB29XvKGIMzWQxrRQefxLag5412e833HKUpyNbCzRDVQtlPCw=="
+        "keyId": "registry-ci",
+        "sig": "2rzZ58imT0tdomQPC7ce7nfeFPSZJBKfEmdoGxg2oxGuuQuvunmztyKF+jaMxne40DBXyDv1/xeIveUriYiYAw=="
       }
     },
     {
@@ -106,8 +106,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "1fGrM5D5TqcnvYW0ksf+ERRrQYGzQPMtadM2L8RlARbyEjSUom4TrEPY7DaMEfkNeEyR6LXrSjLE/HdhWogSAA=="
+        "keyId": "registry-ci",
+        "sig": "kOGvBF7aNY2qmRyV8FS7UYqIHermnhVecumvVhmPgNgACxLbTLW4pubtccT0hGFlPHAJiK8Q9gHK8k+YaCt7DQ=="
       }
     },
     {
@@ -170,8 +170,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "B2ArjraeKQFYzYfygpQ87lxv8v/BpD+JOdubiIfFMxAd+ApCn6d5SyTyKH+xuyG6Tp1dPbRi+y9p54vIN/fKCQ=="
+        "keyId": "registry-ci",
+        "sig": "vvpXf4ApzGh1JpT7B7GuLe4n75s/71GAznRNijP2j3u4LZhkhBZBa36ZjqnhA2mvJrRYyBWSlthujANuelMABA=="
       }
     },
     {
@@ -204,8 +204,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "Uyt5P6Jh+KccxKAUWIiMOOUs0XJyLPcqMWzkKE+YGAQw3QQg5ZOzbA4SyCf/dtrXaCDw/bp87BSbT8MUGUpdBQ=="
+        "keyId": "registry-ci",
+        "sig": "e9/VuEVrDkk7p9AjRamkuFROIIyixDL3SAZCq3+YdXDAd1NdaZztBqH+pvT0VpeIYFa6z1lSx+dOqbsAIhIbDw=="
       }
     },
     {
@@ -238,8 +238,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "z07MOJQwwN2DEa9R+vYPEo3B8KDBQbDcpZb8To8MQcu9A0wg1p7SsAEdgS0+HQ3UAcqZjakhEMqkvkminaaTBA=="
+        "keyId": "registry-ci",
+        "sig": "kpdQvW2W7mlOz4f/KQxd1Nzx6lahavVWtF1VyMQ/uGtXdkxTnTaFhvy4w2VivirIhytdjEYUMRT1E3BwbAGhDA=="
       }
     },
     {
@@ -272,8 +272,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "+sjWv5HIWgHMvOzgPO63iOe3wnbGF96mjcmkqLDap2zMYltWOmuMA4AIi7QttYBzbKOwngfZ+18i+/1AO+7MCg=="
+        "keyId": "registry-ci",
+        "sig": "A0bWYsruWH7vG+/ZanoOV6pzNi8L13wx+SNFcqADzi+841nHkxshY6PXWmn0BRjK2Ov1jHp9ogcH0ZasVjrpAA=="
       }
     },
     {
@@ -306,8 +306,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "TzeO9Au3uU4WUi4M+nO2qOxlY0ZjYZJFus/uVEddvAGLpSqIPXBBShYmJsIYSSpfwdTdfZ26aGlol2LmunwKDg=="
+        "keyId": "registry-ci",
+        "sig": "VnasXOn4aEcP0tJStrfirYg1pNT2gE5kv0/+FsUCym6p7YEmOAvjo1QpYvQtZv2H919K90g6dsQRdfRgaCHNBQ=="
       }
     },
     {
@@ -340,8 +340,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "NU/ghhM+Ng1FtMUEsarWqSi24BuyduZFNiLs/lflxOC37C0Kl92rrvh6ywM5Ia9uBY3eywkPzHwEmOTUTf49Dw=="
+        "keyId": "registry-ci",
+        "sig": "OBlnd+UaMz538kuFYbKNvbiJSqSlLlL05E9pRNBgZvuapewZYv7Z1aogw9LB2ml1I3k4RExtD4QXin1pWAOzCg=="
       }
     },
     {
@@ -374,8 +374,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "x7NuMXa/zsJiBpA837IC8IVdc561RxcxSqZNSNWS2rGczT2rn457xiAWmAyZ+z4+ct64qnyudfW0N1pU2GpUCA=="
+        "keyId": "registry-ci",
+        "sig": "q30v+w+wvIkGDtiu4dvpYunWmVyKq26n0LIKoF+WqVCSapFKkSg3U+WIdy98lw9uSiCMGaZnOhSwQdA9AlI5BA=="
       }
     },
     {
@@ -408,8 +408,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "yZqkP0uJmq6N4RZ1ZXP//9U+huBnqBPaEYFeWKCAZ0wOGfmKcakj2iGq7Wg/eW8m6nsOatL0d5GxneWYobEaDw=="
+        "keyId": "registry-ci",
+        "sig": "HMvZcxzZB6vdmbhWiP2VBDi/CcZzyZZZqfKv07ShNA8fP/1GKGTaMKSWCjOvisMInbPTSxDBOGy4WDg8WME3DQ=="
       }
     },
     {
@@ -442,8 +442,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "MeifBYwcqieZHWb9h7xj+b3f15aPmVkOX7Lm7duf1oHrSyrS5xRI7g78GK0pXZ6rXVHrR/wKe6DoPz7nI426Bg=="
+        "keyId": "registry-ci",
+        "sig": "gzLVaQkyVN45fVdxd4XmpyjBIWi1QgK6AiFM2X73PNK3cE5IXC86ypvRRnArfRuKGAbUTX77nFQvyiSPhWzrCQ=="
       }
     },
     {
@@ -476,8 +476,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "1+LSeUluA7e8DFEwVWi6+OHFD7cdCaO2i4N2SaQvhnlsBX73JtJFXSToFhtyTwsLxmWjBkacX337creRLolGAg=="
+        "keyId": "registry-ci",
+        "sig": "WR/kBJwdot0RyBj39anHWI2+c2kXVgbG+knoZg5l/9tzYd6SuWBedClgH8eaAwj6OY9EDoZA8txonEyL+WE9CQ=="
       }
     },
     {
@@ -510,8 +510,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "fk+860kUY6ZNpCEST58G2bs5IzD2bF+1U9rkvp52RPP33aKEm1VreIoUZgtJ/T9jH8ad8QiXPD5Fi7VrBqQtBg=="
+        "keyId": "registry-ci",
+        "sig": "/fAzaOqpL/6GcHYU2IZTuOa3/bHipuIQbeMIXTdv2AwjCg9kWsC/B9nC2xCK9gNns/OHgY/1cNuENZYNx07mBQ=="
       }
     },
     {
@@ -544,8 +544,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "qoUiodOdG9xGD6KIghk+lRnvJT+dpB67e+M/h5MzDkPAXPqrgCjPMCspRKVU+NrcRRfJ/T+nhyJaxf4VxtxPBA=="
+        "keyId": "registry-ci",
+        "sig": "TfMdomr9cVje7tvnUaO9bNH+dWo4jOGkZZxm8Wgt5EbFws8Cx1/tHRUqKt3vUSolDky9cJ8viOzsLaaHd3LyDg=="
       }
     },
     {
@@ -578,8 +578,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "AObKIuOmjrsxibNtxKeXwkY+/rKtn2UYo3RB6ogFdL/jGYW/yAcbIEQaGKT+EevRu1tfkuGTgoIlQuksS1v2Ag=="
+        "keyId": "registry-ci",
+        "sig": "rJ/wRr2mOL9gulIKQOuzmWEsjLmQyKlBaKnIuhYYgGIkrP+4OILlxL3lj9Bmksf/j9LoZVpOQyVD6x8mf1fcCQ=="
       }
     },
     {
@@ -612,8 +612,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "/xDgAl/aaF9SPjE3ep7L1Ny3A+wGpWj2Ois4cVApBTjGDoO3aSKuKFvsdsb2nEOj2AZt1hFbASTte+dRd/Q+Dg=="
+        "keyId": "registry-ci",
+        "sig": "R9DqGG02AwbQ9uPZz+sOa8i0f6RgoJOUM0wQYfcO3rJ/fynoxzsTC91gisb7G6l4RYF6ymOjP2hMadlAXJnqDA=="
       }
     },
     {
@@ -646,8 +646,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "dUPBpGGHFKjCFxc9bQ8H2wwAbWwa6xoHfdNgm1GuDesmdWkQ4D5DWG9GR46+EdJA26JxS/oFSXHcDfkFvwvfDA=="
+        "keyId": "registry-ci",
+        "sig": "xACIgTQPSCWxQR8So2OPvyKEeQ3s2JES53DALNceOruqVrirG4NGz8YY+Q7f1Jd66DZZB+3BG9w6x+ygSQZtDg=="
       }
     },
     {
@@ -680,8 +680,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "cNnYRcDidogtk4k8ng66SxSDfEkg3xcD1tEspnUb6ggfTygehVilRIiujUYMQtiqM8c+nqmhLlFPgGNEIdiYDQ=="
+        "keyId": "registry-ci",
+        "sig": "/LGg8KmOSxrrwJh7RZ7zFyF0hFlEUzoceE8o887oFKcpPYzIOnKVPAoII6lKOUdhZlMUt1jAlOsGUKFpz0vCBg=="
       }
     },
     {
@@ -714,8 +714,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "V+AjVo35QGYhyT+O4BtrOZsJ/auWvkR96pYInxeKAd/iwQFyaea2RkN0fpodc+2f1QZOoauu72iso0CBy5MeCw=="
+        "keyId": "registry-ci",
+        "sig": "9yaFsZbhrhbnVppvlnnLGiK66gocBCEwVgfzhQzXkDI8gprnDOfPe+9krM2fLMlzLirqkM+uu2WlGAAgxvZtAQ=="
       }
     },
     {
@@ -748,8 +748,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "/Qz5owfc2iKl0wkzaYRILbWwz2OL/CrFUQ1Dp5XiJy9Zg6U9qkCyjx1UUJmb5b4eBXL8+N9NOShpcf2TgM9/BA=="
+        "keyId": "registry-ci",
+        "sig": "4nFzvrhmstau9DKVVPJme6vYoedq1e9iec4JTvZ1FEMULkDryW6cnatyHPPULWI/J+ePXlK+Y+U4t8N2/TcaCw=="
       }
     },
     {
@@ -782,8 +782,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "I/cYjZmjbFLA3FfHxr/IgUQRwdRzhl1eE9aH8PIZ7kOWDFeM7gyVQ/FsfAcD95jVuU2Bw4E/n7yh9PllpbgMBQ=="
+        "keyId": "registry-ci",
+        "sig": "OFK73sM+1ABJ/QtJqvPuRvWFXUJkc51zTMS2S6PZhAYJ8RJF5mN0HpkIOeY9Gdlv+iI+f9qOWlIGeVRgb5XkDQ=="
       }
     },
     {
@@ -816,8 +816,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "6tAmvRYqaTQmKHAlgdQlRqx7b0hXXGKLgd6Ezd1vhAo2n1KDpD8/wUx4rlcbupHpb1v5CXAEOT41WETMWuo9Dg=="
+        "keyId": "registry-ci",
+        "sig": "LiEfLOJ/YuGaA3bECiEqaDyPAHaXZBh9uRRiLYEz0plfCfCPCB6agt4NEZanKlv9Vm05LkHDBaPYJr7fd0uMBQ=="
       }
     },
     {
@@ -850,8 +850,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "geHMC2ti6xdwDSEyP5N00kaVYcYkGU0qz5rEH2UGbjrKm2bCujgOEdR055dnbSE7sGR4g4x4OjUwKgBJo2gHBA=="
+        "keyId": "registry-ci",
+        "sig": "x3lULsijjzbpgYIo/ZMUsD0TAqBAMk3DsytoEQRZWUuv0aTJkze71GDrr8ZjdXHj6yuQXqB0fce1eWthOYRQAQ=="
       }
     },
     {
@@ -915,8 +915,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "CK3MtqTQixZDTzZGD3k3uJrSAsWISnS9TLKO536HF4RJovimNL0fVSY3Zj6/ReV0QGyitnfFDyNUSjDq6Ln1Bg=="
+        "keyId": "registry-ci",
+        "sig": "InPR/qeS6d2G0KliVgk9rqYHPGIUa/80VsTNc4Z5hD4rVvSJUc8lpG8iX8EARJGtVaOZSLjLawQ/W8uu/52MAg=="
       }
     },
     {
@@ -980,8 +980,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "M300SoJkDMgPSLTjR0wv/JCUyQPeNtyOt4stzevs7CkvMHig/OEJu77jx5kzhX6aVyIOg1GJOzGJsivzVcKmCg=="
+        "keyId": "registry-ci",
+        "sig": "TiLK6rNRSm83rHO1uSCosY2rp6Zh1uriGVhMatv+Wu4lfj4/Z/Sp6Oy3d14sYvM15sSSMDnsYvDBpMT/E9o3CA=="
       }
     },
     {
@@ -1075,8 +1075,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "DlvIl+byaOxfxAEfMcHUiusbtU7B7Vre9TF8ffCci7hKgGXbS3c76ZlS1RjSEUhBIXu6izyNMtdtKJgOxaU4CQ=="
+        "keyId": "registry-ci",
+        "sig": "D+n5VOvS6z6/qj2RyoA17TYb4jDX0iPnplR/vB4P1a9u5x18JGg7CkmlKEN6dJmujRj0MZwEFU0WdDN7ZlUTAw=="
       }
     },
     {
@@ -1214,8 +1214,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "nf9054XOe9kquQDg8naNBhhQgghIW5hZY6T0knwldOlky/xn24/qO6jT+72XOZV3jYDLLt63EfxLto8Cm2x1BA=="
+        "keyId": "registry-ci",
+        "sig": "unhqAPqETAou54OxSFyZT+7uagkKz+AfpS0DaXDBR+LgL0mrJnS8GORidE9tJjfiFLSjOBwuyHANKTNlTmG1Ag=="
       }
     },
     {
@@ -1283,8 +1283,8 @@
       },
       "signature": {
         "algo": "ed25519",
-        "keyId": "dev-2",
-        "sig": "NX8Wv7c8KfT0HMpNHMGFT6K6iQfGZNdTSgRx1AIBKNNFqMVoSniEN7Q5GTA4Cl4rWHjO1hh2VtAD7yDwk7RRAQ=="
+        "keyId": "registry-ci",
+        "sig": "MLB3/gLbz0cM8KPfiG2tOVw0Nx3GxwdI+MDCtTmb0OXUiXgT8evjAvOmBnowzo7orUDeAkD1V1A2KMAZ996KDw=="
       }
     }
   ]
